@@ -1,17 +1,38 @@
-import { MapPin, Mail, Download, Github, Linkedin, Award, BookOpen, Code2, Sparkles } from 'lucide-react';
+import { MapPin, Mail, Download, Github, Linkedin, Award, BookOpen, Sparkles, Shield, Server, Briefcase, GraduationCap, Database, GitBranch, Key, Lock } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+
+// Inline SVG skill icons
+const PyTorchIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 13.94 9.866 9.866 0 0013.94 0 9.866 9.866 0 000-13.94l-3.486 3.486a4.932 4.932 0 010 6.97 4.932 4.932 0 01-6.97 0 4.932 4.932 0 010-6.97l5.121-5.121L12.005 0zm5.453 3.467a1.233 1.233 0 100 2.466 1.233 1.233 0 000-2.466z" /></svg>
+);
+const DjangoIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.108.535-4.805 0-7.3-2.17-7.3-6.339 0-3.994 2.648-6.57 6.753-6.57.882 0 1.55.076 1.731.153V0zm0 9.143c-.459-.153-.842-.229-1.32-.229-1.99 0-3.14 1.222-3.14 3.338 0 2.055 1.089 3.186 3.078 3.186.459 0 .841-.038 1.382-.115V9.143zM21.338 6.11v9.597c0 3.338-.25 4.94-1.003 6.32-.688 1.32-1.59 2.15-3.454 3.073l-3.643-1.73c1.864-.842 2.767-1.62 3.376-2.82.634-1.222.852-2.648.852-6.188V6.11h3.872zM17.695 0h3.924v3.924h-3.924V0z" /></svg>
+);
+const PythonIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.35.12-.33.18-.3.24-.28.3-.25.35-.22.38-.19.4-.16.43-.13.44-.1.43-.07.42-.05.4-.02.35-.01h.28l.35.04zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09-.33.22zM21.1 6.11l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.89.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-.16l-.06-.01h-8.16v.83h5.18l.01 2.76.02.36-.05.34-.12.33-.18.3-.24.28-.3.25-.35.22-.38.2-.4.16-.43.13-.44.1-.43.07-.42.04-.4.02-.35.01h-.28l-.35-.04-.34-.07-.33-.1-.3-.13-.27-.17-.24-.2-.2-.24-.17-.27-.13-.3-.1-.32-.08-.34-.05-.34-.03-.34V10.67l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01.21.03zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08-.33.23z" /></svg>
+);
+const NeuralNetIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="6" cy="6" r="2" /><circle cx="18" cy="6" r="2" /><circle cx="6" cy="18" r="2" /><circle cx="18" cy="18" r="2" /><circle cx="12" cy="12" r="2.5" /><line x1="7.8" y1="7.2" x2="10.2" y2="10.2" /><line x1="16.2" y1="7.2" x2="13.8" y2="10.2" /><line x1="7.8" y1="16.8" x2="10.2" y2="13.8" /><line x1="16.2" y1="16.8" x2="13.8" y2="13.8" /></svg>
+);
+const TransformerIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="8" y="14" width="8" height="7" rx="1" /><line x1="6.5" y1="10" x2="10" y2="14" /><line x1="17.5" y1="10" x2="14" y2="14" /></svg>
+);
+const RestApiIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 6h16M4 12h16M4 18h16" /><circle cx="8" cy="6" r="1.5" fill="currentColor" /><circle cx="16" cy="12" r="1.5" fill="currentColor" /><circle cx="10" cy="18" r="1.5" fill="currentColor" /></svg>
+);
+const ActiveDirectoryIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3" /><circle cx="12" cy="9" r="3" /><path d="M7 19v-1a5 5 0 0110 0v1" /></svg>
+);
+const WindowsServerIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="2" y1="10" x2="22" y2="10" /><line x1="12" y1="3" x2="12" y2="17" /><line x1="8" y1="20" x2="16" y2="20" /><line x1="12" y1="17" x2="12" y2="20" /></svg>
+);
 
 interface Experience {
   company: string;
   role: string;
   period: string;
   description?: string;
-}
-
-interface Testimonial {
-  quote: string;
-  author: string;
-  role: string;
+  icon: React.ElementType;
 }
 
 const About = () => {
@@ -19,7 +40,6 @@ const About = () => {
   const { ref: skillsRef, isVisible: skillsVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: expRef, isVisible: expVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: eduRef, isVisible: eduVisible } = useScrollReveal<HTMLDivElement>();
-  const { ref: testimonialRef, isVisible: testimonialVisible } = useScrollReveal<HTMLDivElement>();
 
   const experiences: Experience[] = [
     {
@@ -27,53 +47,44 @@ const About = () => {
       role: 'Identity and Access Management (IAM) Intern',
       period: 'Feb 2026 - Present',
       description: 'Supporting identity administration and access management operations in the Middle East\'s largest cybersecurity company. Working with Active Directory, Windows Server, user/computer account management, group-based access control, and security best practices.',
+      icon: Shield,
     },
     {
       company: 'Freelance',
       role: 'ML Engineer & Backend Developer',
       period: '2023 - Present',
       description: 'Building end-to-end ML pipelines and scalable backend systems for various clients and projects.',
+      icon: Briefcase,
     },
     {
       company: 'Academic Research',
       role: 'Deep Learning Researcher',
       period: '2022 - 2023',
       description: 'Implemented generative models from scratch including GANs, VAEs, and Flow-based models.',
+      icon: GraduationCap,
     },
     {
       company: 'Self-Directed Learning',
       role: 'Backend Developer',
       period: '2021 - 2022',
       description: 'Mastered Django, DRF, and database design through hands-on projects and certifications.',
-    },
-  ];
-
-  const testimonials: Testimonial[] = [
-    {
-      quote: "Ankit has an exceptional ability to translate complex machine learning concepts into practical solutions. His work on our GAN project exceeded all expectations with clean, well-documented code.",
-      author: "Project Collaborator",
-      role: "Research Partner",
-    },
-    {
-      quote: "Working with Ankit was a great experience. He brings both technical depth and creative problem-solving to every project. His Django backend work was clean, scalable, and production-ready.",
-      author: "Team Member",
-      role: "Software Developer",
+      icon: Server,
     },
   ];
 
   const skills = [
-    { name: 'PyTorch', level: 90, category: 'ML/DL' },
-    { name: 'Django', level: 85, category: 'Backend' },
-    { name: 'Python', level: 90, category: 'Language' },
-    { name: 'SQL', level: 80, category: 'Database' },
-    { name: 'GANs/VAEs', level: 85, category: 'ML/DL' },
-    { name: 'Transformers', level: 80, category: 'ML/DL' },
-    { name: 'REST APIs', level: 85, category: 'Backend' },
-    { name: 'Git', level: 85, category: 'Tools' },
-    { name: 'Active Directory', level: 75, category: 'IAM' },
-    { name: 'Windows Server', level: 75, category: 'IAM' },
-    { name: 'Access Control', level: 80, category: 'IAM' },
-    { name: 'Kerberos/NTLM', level: 70, category: 'Security' },
+    { name: 'PyTorch', level: 90, category: 'ML/DL', icon: PyTorchIcon },
+    { name: 'Django', level: 85, category: 'Backend', icon: DjangoIcon },
+    { name: 'Python', level: 90, category: 'Language', icon: PythonIcon },
+    { name: 'SQL', level: 80, category: 'Database', icon: Database },
+    { name: 'GANs/VAEs', level: 85, category: 'ML/DL', icon: NeuralNetIcon },
+    { name: 'Transformers', level: 80, category: 'ML/DL', icon: TransformerIcon },
+    { name: 'REST APIs', level: 85, category: 'Backend', icon: RestApiIcon },
+    { name: 'Git', level: 85, category: 'Tools', icon: GitBranch },
+    { name: 'Active Directory', level: 75, category: 'IAM', icon: ActiveDirectoryIcon },
+    { name: 'Windows Server', level: 75, category: 'IAM', icon: WindowsServerIcon },
+    { name: 'Access Control', level: 80, category: 'IAM', icon: Lock },
+    { name: 'Kerberos/NTLM', level: 70, category: 'Security', icon: Key },
   ];
 
   return (
@@ -201,7 +212,7 @@ const About = () => {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <Code2 className="w-5 h-5 text-indigo-500" />
+                    <skill.icon className="w-5 h-5 text-indigo-500" />
                     <span className="font-semibold text-gray-900">{skill.name}</span>
                   </div>
                   <span className="text-sm text-gray-500">{skill.category}</span>
@@ -247,8 +258,8 @@ const About = () => {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
-                        {exp.company.charAt(0)}
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white">
+                        <exp.icon className="w-5 h-5" />
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">{exp.company}</p>
@@ -317,53 +328,6 @@ const About = () => {
               </h3>
               <p className="text-gray-600">2024-2025</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section
-        ref={testimonialRef}
-        className="py-24 px-6"
-      >
-        <div className="max-w-4xl mx-auto">
-          <div className={`text-center mb-12 transition-all duration-700 ${testimonialVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="text-sm font-medium text-indigo-500 uppercase tracking-widest mb-2 block">
-              Testimonials
-            </span>
-            <h2 className="text-4xl font-serif text-gray-900">
-              What others say
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className={`relative p-8 bg-gray-50 rounded-3xl hover:bg-white hover:shadow-xl transition-all duration-700 ${testimonialVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
-              >
-                {/* Quote mark */}
-                <div className="absolute -top-4 -left-2 text-6xl text-indigo-200 font-serif leading-none">
-                  "
-                </div>
-
-                <p className="text-gray-700 leading-relaxed mb-6 relative z-10">
-                  {testimonial.quote}
-                </p>
-
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                    {testimonial.author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
-                    <p className="text-sm text-gray-500">{testimonial.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
