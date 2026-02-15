@@ -33,6 +33,7 @@ interface Experience {
   period: string;
   description?: string;
   icon: React.ElementType;
+  image?: string;
 }
 
 const About = () => {
@@ -48,6 +49,7 @@ const About = () => {
       period: 'Feb 2026 - Present',
       description: 'Supporting identity administration and access management operations in the Middle East\'s largest cybersecurity company. Working with Active Directory, Windows Server, user/computer account management, group-based access control, and security best practices.',
       icon: Shield,
+      image: '/pcs.jpeg',
     },
     {
       company: 'ML Engineering',
@@ -258,9 +260,15 @@ const About = () => {
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white">
-                        <exp.icon className="w-5 h-5" />
-                      </div>
+                      {exp.image ? (
+                        <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0">
+                          <img src={exp.image} alt={exp.company} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white">
+                          <exp.icon className="w-5 h-5" />
+                        </div>
+                      )}
                       <div>
                         <p className="text-sm text-gray-500">{exp.company}</p>
                         <h3 className="text-xl font-semibold text-gray-900">{exp.role}</h3>
