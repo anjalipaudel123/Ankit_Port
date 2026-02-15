@@ -47,7 +47,7 @@ const About = () => {
       company: 'Paramount Computer Systems',
       role: 'Identity and Access Management (IAM) Intern',
       period: 'Feb 2026 - Present',
-      description: 'Supporting identity administration and access management operations in the Middle East\'s largest cybersecurity company. Working with Active Directory, Windows Server, user/computer account management, group-based access control, and security best practices.',
+      description: 'Supporting identity administration and access management operations at a trusted enterprise cybersecurity solutions provider in the GCC. Working with Active Directory, Windows Server, user/computer account management, group-based access control, and security best practices.',
       icon: Shield,
       image: '/pcs.jpeg',
     },
@@ -131,7 +131,7 @@ const About = () => {
               </p>
 
               <p className="text-gray-600 leading-relaxed mb-4">
-                Currently working remotely as an Identity and Access Management intern at the Middle East's largest cybersecurity company, managing Active Directory, Windows Server, and access control operations.
+                Currently working remotely as an Identity and Access Management intern at an established GCC cybersecurity consulting and IAM services company, managing Active Directory, Windows Server, and access control operations.
               </p>
 
               <p className="text-gray-600 leading-relaxed mb-8">

@@ -201,7 +201,7 @@ const Home = () => {
           </div>
 
           <p className="text-xl md:text-2xl text-gray-700 leading-relaxed text-center">
-            Currently working as an <span className="font-semibold text-gray-900">IAM Intern at Paramount Computer Systems</span>, the Middle East's largest cybersecurity company. I also build intelligent systems as a <span className="font-semibold text-gray-900">Machine Learning Engineer</span> and <span className="font-semibold text-gray-900">Backend Developer</span>. I work across cybersecurity, deep learning, and backend systems to solve real-world problems.
+            Currently working as an <span className="font-semibold text-gray-900">IAM Intern at Paramount Computer Systems</span>, a regional cybersecurity leader in the Middle East. I also build intelligent systems as a <span className="font-semibold text-gray-900">Machine Learning Engineer</span> and <span className="font-semibold text-gray-900">Backend Developer</span>. I work across cybersecurity, deep learning, and backend systems to solve real-world problems.
           </p>
         </div>
       </section>
