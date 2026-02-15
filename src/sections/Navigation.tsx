@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Menu, X, Download } from 'lucide-react';
 
 interface NavigationProps {
@@ -28,8 +28,8 @@ const Navigation = ({ scrollY }: NavigationProps) => {
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
       <div
         className={`transition-all duration-300 ${scrollY > 50
-            ? 'glass border-b border-white/5'
-            : 'bg-transparent'
+          ? 'glass border-b border-white/5'
+          : 'bg-transparent'
           }`}
         style={{
           height: scrollY > 50 ? '64px' : '80px',
@@ -98,8 +98,8 @@ const Navigation = ({ scrollY }: NavigationProps) => {
       {/* Mobile Menu */}
       <div
         className={`md:hidden absolute top-full left-0 right-0 glass border-b border-white/5 transition-all duration-300 ${isMenuOpen
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 -translate-y-4 pointer-events-none'
+          ? 'opacity-100 translate-y-0'
+          : 'opacity-0 -translate-y-4 pointer-events-none'
           }`}
       >
         <div className="px-4 py-6 space-y-4">
