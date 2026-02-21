@@ -1,4 +1,4 @@
-import { MapPin, Mail, Download, Github, Linkedin, Award, BookOpen, Sparkles, Shield, Server, Briefcase, GraduationCap, Database, GitBranch, Key, Lock } from 'lucide-react';
+import { MapPin, Mail, Download, Github, Linkedin, Award, BookOpen, Sparkles, Shield, Server, Briefcase, GraduationCap, Database, GitBranch, Key, Lock, Camera, Film, Aperture, Play } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // Inline SVG skill icons
@@ -41,6 +41,7 @@ const About = () => {
   const { ref: skillsRef, isVisible: skillsVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: expRef, isVisible: expVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: eduRef, isVisible: eduVisible } = useScrollReveal<HTMLDivElement>();
+  const { ref: creativeRef, isVisible: creativeVisible } = useScrollReveal<HTMLDivElement>();
 
   const experiences: Experience[] = [
     {
@@ -135,7 +136,7 @@ const About = () => {
               </p>
 
               <p className="text-gray-600 leading-relaxed mb-8">
-                I'm a Computer Science student passionate about cybersecurity and building intelligent systems. Over the past 3 years, I've worked in ML, backend development, and now IAM security, implementing deep learning models from scratch, building scalable backend systems, and securing enterprise infrastructure through proper access management.
+                I'm a Computer Science student passionate about cybersecurity and building intelligent systems. Over the past 3 years, I've worked in ML, backend development, and now IAM security. When I'm not writing code, you'll find me behind a camera or color grading in DaVinci Resolve — photography and video editing are my creative outlets that keep the other side of my brain alive.
               </p>
 
               {/* Contact Info */}
@@ -336,6 +337,185 @@ const About = () => {
               </h3>
               <p className="text-gray-600">2024-2025</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Beyond Code — Creative Side */}
+      <section
+        ref={creativeRef}
+        className="py-24 px-6 relative overflow-hidden"
+      >
+        {/* Subtle film grain overlay */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }} />
+
+        <div className="max-w-5xl mx-auto relative">
+          <div className={`text-center mb-16 transition-all duration-700 ${creativeVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <span className="text-sm font-medium text-indigo-500 uppercase tracking-widest mb-2 block">
+              Beyond Code
+            </span>
+            <h2 className="text-4xl font-serif text-gray-900 mb-4">
+              The Creative Side
+            </h2>
+            <p className="text-gray-600 max-w-xl mx-auto">
+              Code tells machines what to do. Photography and film tell humans what to feel.
+              I do both.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Photography Card */}
+            <div
+              className={`group relative rounded-3xl overflow-hidden transition-all duration-700 ${creativeVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+              style={{ transitionDelay: '100ms' }}
+            >
+              {/* Faux viewfinder / camera card */}
+              <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8 rounded-3xl min-h-[340px] flex flex-col justify-between">
+                {/* Viewfinder corners */}
+                <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white/30 rounded-tl" />
+                <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white/30 rounded-tr" />
+                <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white/30 rounded-bl" />
+                <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white/30 rounded-br" />
+
+                {/* Focus crosshair center */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-4 bg-white" />
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-4 bg-white" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 h-px w-4 bg-white" />
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 h-px w-4 bg-white" />
+                  <div className="absolute inset-3 border border-white/50 rounded-full" />
+                </div>
+
+                {/* Top bar — simulated camera HUD */}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                    <span className="text-[10px] text-white/40 font-mono uppercase tracking-widest">REC</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-[10px] text-white/30 font-mono">
+                    <span>f/1.8</span>
+                    <span>1/125s</span>
+                    <span>ISO 400</span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 mt-auto">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Aperture className="w-6 h-6 text-white" />
+                    </div>
+                    <Camera className="w-5 h-5 text-white/40" />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-white mb-2">Photography</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Casual photographer capturing moments, moods, and stories through the lens.
+                    It's how I see the world when I step away from the screen.
+                  </p>
+                </div>
+
+                {/* Aperture ring decoration */}
+                <div className="absolute -bottom-20 -right-20 w-56 h-56 border border-white/5 rounded-full" />
+                <div className="absolute -bottom-16 -right-16 w-44 h-44 border border-white/5 rounded-full" />
+                <div className="absolute -bottom-12 -right-12 w-32 h-32 border border-white/[0.03] rounded-full" />
+              </div>
+            </div>
+
+            {/* Video Editing Card — DaVinci Resolve */}
+            <div
+              className={`group relative rounded-3xl overflow-hidden transition-all duration-700 ${creativeVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+              style={{ transitionDelay: '250ms' }}
+            >
+              <div className="relative bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] p-8 rounded-3xl min-h-[340px] flex flex-col justify-between">
+
+                {/* Simulated color grading wheels */}
+                <div className="flex items-center justify-center gap-6 mb-6">
+                  {[{ label: 'Lift', color: 'from-blue-500/20 to-cyan-500/20' }, { label: 'Gamma', color: 'from-green-500/20 to-emerald-500/20' }, { label: 'Gain', color: 'from-orange-500/20 to-amber-500/20' }].map((wheel) => (
+                    <div key={wheel.label} className="flex flex-col items-center gap-1">
+                      <div className={`w-14 h-14 rounded-full bg-gradient-to-br ${wheel.color} border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
+                        <div className="w-2 h-2 rounded-full bg-white/60" />
+                      </div>
+                      <span className="text-[9px] text-white/30 font-mono uppercase tracking-wider">{wheel.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Simulated timeline */}
+                <div className="mb-6 px-2">
+                  <div className="flex items-center gap-1 mb-2">
+                    <Play className="w-3 h-3 text-white/40" />
+                    <div className="flex-1 h-px bg-white/10" />
+                    <span className="text-[9px] text-white/25 font-mono">00:03:24:12</span>
+                  </div>
+                  <div className="flex gap-1 h-6 rounded overflow-hidden">
+                    {[...Array(16)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 rounded-sm group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          backgroundColor: `hsl(${200 + i * 10}, ${40 + i * 3}%, ${25 + i * 2}%)`,
+                          opacity: 0.5 + (i % 3) * 0.2,
+                          transitionDelay: `${i * 30}ms`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex gap-1 h-3 mt-1 rounded overflow-hidden">
+                    {[...Array(16)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="flex-1 rounded-sm"
+                        style={{
+                          backgroundColor: `hsl(${120 + i * 8}, ${30 + i * 2}%, ${20 + i}%)`,
+                          opacity: 0.3 + (i % 4) * 0.15,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="relative z-10 mt-auto">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                      <Film className="w-6 h-6 text-white" />
+                    </div>
+                    <span className="text-[10px] text-white/30 font-mono px-2 py-1 border border-white/10 rounded">DaVinci Resolve</span>
+                  </div>
+                  <h3 className="text-2xl font-semibold text-white mb-2">Video Editing</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    Color grading, cutting, and crafting visual stories in DaVinci Resolve.
+                    From casual edits to polished short films.
+                  </p>
+                </div>
+
+                {/* Decorative node graph dots */}
+                <div className="absolute top-6 right-6 grid grid-cols-3 gap-2 opacity-20">
+                  {[...Array(9)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-1.5 rounded-full bg-white" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tools strip */}
+          <div className={`mt-8 flex flex-wrap justify-center gap-3 transition-all duration-700 delay-500 ${creativeVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {[
+              { name: 'DaVinci Resolve', icon: Film },
+              { name: 'Color Grading', icon: Aperture },
+              { name: 'Street Photography', icon: Camera },
+              { name: 'Landscape', icon: Camera },
+              { name: 'Video Production', icon: Play },
+            ].map((tool) => (
+              <span
+                key={tool.name}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
+              >
+                <tool.icon className="w-3.5 h-3.5" />
+                {tool.name}
+              </span>
+            ))}
           </div>
         </div>
       </section>
