@@ -9,14 +9,12 @@ import LoadingScreen from './components/LoadingScreen';
 import { useTheme } from './hooks/useTheme';
 
 type Page = 'home' | 'about' | 'skills';
-const PAGE_ORDER: Page[] = ['home', 'about', 'skills'];
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
   const [showLoader, setShowLoader] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [transitionState, setTransitionState] = useState<'idle' | 'exit' | 'enter'>('idle');
-  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const pendingPageRef = useRef<Page | null>(null);
@@ -44,42 +42,30 @@ function App() {
   const handlePageChange = (page: Page) => {
     if (page === currentPage || transitionState !== 'idle') return;
 
-    // Determine slide direction based on page order
-    const currentIdx = PAGE_ORDER.indexOf(currentPage);
-    const nextIdx = PAGE_ORDER.indexOf(page);
-    setSlideDirection(nextIdx > currentIdx ? 'right' : 'left');
     pendingPageRef.current = page;
 
-    // Phase 1: Exit current page
+    // Phase 1: Zoom out (GTA V pull-away)
     setTransitionState('exit');
 
     setTimeout(() => {
-      // Phase 2: Swap page while offscreen
+      // Phase 2: Swap page at peak zoom-out
       setCurrentPage(page);
       window.scrollTo({ top: 0 });
       setTransitionState('enter');
 
-      // Phase 3: Enter new page
+      // Phase 3: Zoom back in (GTA V drop-in)
       setTimeout(() => {
         setTransitionState('idle');
         pendingPageRef.current = null;
-      }, 500);
-    }, 350);
+      }, 700);
+    }, 500);
   };
 
-  // Build transition classes
+  // Build GTA V transition classes
   const getPageClasses = () => {
-    if (transitionState === 'exit') {
-      return slideDirection === 'right'
-        ? 'page-exit-left'
-        : 'page-exit-right';
-    }
-    if (transitionState === 'enter') {
-      return slideDirection === 'right'
-        ? 'page-enter-right'
-        : 'page-enter-left';
-    }
-    return 'page-idle';
+    if (transitionState === 'exit') return 'gta-zoom-out';
+    if (transitionState === 'enter') return 'gta-zoom-in';
+    return 'gta-idle';
   };
 
   return (
