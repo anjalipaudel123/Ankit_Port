@@ -286,8 +286,8 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
                         transition: 'opacity 0.5s ease 0.2s, transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s',
                     }}
                 >
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/40 mb-4 portal-center-glow">
-                        <span className="text-white font-bold text-2xl font-serif">A</span>
+                    <div className="w-20 h-20 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/40 mb-4 portal-center-glow overflow-hidden">
+                        <img src="/logo.png" alt="Ankit Paudel Logo" className="w-full h-full object-contain" />
                     </div>
                     <h1 className="text-2xl md:text-3xl font-serif text-white tracking-tight mb-2 drop-shadow-lg">
                         Ankit Paudel
