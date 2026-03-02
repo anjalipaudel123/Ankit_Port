@@ -674,17 +674,7 @@
   color: #f1f1f4 !important;
 }
 
-/* Cards & interactive elements */
-.dark .bg-gray-900 {
-  background-color: #f1f1f4 !important;
-  color: #0a0a0f !important;
-}
-
-.dark .bg-gray-900.text-white {
-  background-color: #f1f1f4 !important;
-  color: #0a0a0f !important;
-}
-
+/* Cards & interactive elements — only invert buttons/links, not section backgrounds */
 .dark .bg-gray-900.text-gray-400 {
   background-color: #1a1a28 !important;
   color: #6a6a82 !important;
