@@ -1,6 +1,47 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Download, Github, Linkedin, X, CheckCircle2, Lightbulb, Target } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Download, Github, Linkedin, X, CheckCircle2, Lightbulb, Target, Camera, Film } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+
+// Inline SVG tech logos for marquee
+const PythonLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 256 255" className={className}><defs><linearGradient id="pyA" x1="12.96%" y1="12.07%" x2="79.64%" y2="87.58%"><stop offset="0%" stopColor="#387EB8" /><stop offset="100%" stopColor="#366994" /></linearGradient><linearGradient id="pyB" x1="19.13%" y1="20.58%" x2="90.43%" y2="88.01%"><stop offset="0%" stopColor="#FFE052" /><stop offset="100%" stopColor="#FFC331" /></linearGradient></defs><path fill="url(#pyA)" d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 110 22.24 11.12 11.12 0 010-22.24z" /><path fill="url(#pyB)" d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.519 33.897zm34.114-19.586a11.12 11.12 0 110-22.24 11.12 11.12 0 010 22.24z" /></svg>
+);
+const PyTorchLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#EE4C2C"><path d="M12.005 0L4.952 7.053a9.865 9.865 0 000 14.022 9.866 9.866 0 0014.022 0c3.867-3.867 3.867-10.155 0-14.022l-2.343 2.343a6.528 6.528 0 010 9.336 6.528 6.528 0 01-9.336 0 6.528 6.528 0 010-9.336l4.366-4.366 2.344-2.343V0zm4.695 4.685a1.173 1.173 0 100 2.345 1.173 1.173 0 000-2.345z" /></svg>
+);
+const DjangoLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#092E20"><path d="M11.146 0h3.924v18.166c-2.013.382-3.491.535-5.096.535-4.791 0-7.288-2.166-7.288-6.32 0-4.002 2.65-6.6 6.753-6.6.637 0 1.121.05 1.707.203zm0 9.143a3.894 3.894 0 00-1.325-.204c-1.988 0-3.134 1.223-3.134 3.365 0 2.09 1.096 3.236 3.109 3.236.433 0 .79-.025 1.35-.102V9.142zM21.314 6.06v9.098c0 3.134-.229 4.638-.917 5.937-.637 1.249-1.478 2.039-3.211 2.905l-3.644-1.733c1.733-.815 2.574-1.53 3.109-2.625.56-1.121.764-2.42.764-5.937V6.059h3.899zM17.39.021h3.924v4.026H17.39z" /></svg>
+);
+const PostgreSQLLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#336791"><path d="M17.128 0a10.134 10.134 0 00-2.755.403l-.063.02A10.922 10.922 0 0012.6.258C11.422.238 10.403.524 9.594 1.01 8.97.766 7.786.396 6.508.4 5.156.405 3.921.862 3.088 1.903 2.26 2.937 1.879 4.436 2.107 6.357c.063.529.176 1.088.34 1.673a29.362 29.362 0 00.733 2.252l.001.002c.296.838.694 1.742 1.234 2.535.553.812 1.253 1.548 2.187 1.9.476.18.99.201 1.491.09.206-.046.401-.123.576-.228.017.226.043.46.083.706.136.842.417 1.672.764 2.137.174.234.398.441.692.489a.986.986 0 00.725-.159c.458-.31.67-.84.856-1.337l.005-.015c.041-.11.074-.182.11-.265-.015 1.003-.022 2.008.037 2.741.034.41.092.78.216 1.087.062.153.15.303.29.416a.764.764 0 00.546.17c.443-.017.777-.242 1.064-.558.29-.318.52-.725.72-1.206.199-.478.357-1.003.48-1.517.063-.261.109-.49.15-.719l.003-.016c.083-.389.134-.611.177-.731.027-.073.032-.066.047-.06l.002.001c.17.101.347.153.54.152.436-.002.743-.27 1.007-.575.26-.298.477-.658.673-1.043.253-.496.444-1.004.574-1.395.018-.053.035-.103.05-.15.028.254.06.51.098.77.065.45.155.932.309 1.308.148.361.38.712.782.834.199.06.411.048.604-.005a1.6 1.6 0 00.525-.258c.478-.345.834-.903 1.126-1.607.578-1.393.968-3.29 1.09-5.418a8.21 8.21 0 001.167-1.406c.452-.664.751-1.284.953-1.834.406-1.105.499-1.985.465-2.658-.035-.673-.217-1.066-.418-1.26-.132-.128-.267-.177-.387-.195a.874.874 0 00-.186-.007z" /></svg>
+);
+const DockerLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#2496ED"><path d="M13.983 11.078h2.119a.186.186 0 00.186-.185V9.006a.186.186 0 00-.186-.186h-2.119a.186.186 0 00-.185.186v1.887c0 .102.083.185.185.185zm-2.954-5.43h2.118a.186.186 0 00.186-.186V3.576a.186.186 0 00-.186-.186h-2.118a.186.186 0 00-.185.186v1.886c0 .102.082.186.185.186zm0 2.716h2.118a.186.186 0 00.186-.186V6.292a.186.186 0 00-.186-.186h-2.118a.186.186 0 00-.185.186v1.886c0 .102.082.186.185.186zm-2.93 0h2.12a.186.186 0 00.184-.186V6.292a.186.186 0 00-.185-.186H8.1a.186.186 0 00-.185.186v1.886c0 .102.083.186.185.186zm-2.964 0h2.119a.186.186 0 00.185-.186V6.292a.186.186 0 00-.185-.186H5.136a.186.186 0 00-.186.186v1.886c0 .102.084.186.186.186zm5.893 2.715h2.118a.186.186 0 00.186-.186V9.006a.186.186 0 00-.186-.186h-2.118a.186.186 0 00-.185.186v1.887c0 .102.082.185.185.185zm-2.93 0h2.12a.186.186 0 00.184-.185V9.006a.186.186 0 00-.184-.186H8.1a.186.186 0 00-.185.186v1.887c0 .102.083.185.185.185zm-2.964 0h2.119a.186.186 0 00.185-.185V9.006a.186.186 0 00-.185-.186H5.136a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185zm-2.92 0h2.12a.186.186 0 00.184-.185V9.006a.186.186 0 00-.184-.186H2.216a.186.186 0 00-.186.186v1.887c0 .102.084.185.186.185zM23.078 13.347c-.473-.35-1.561-.462-2.399-.31-.108-.753-.57-1.408-1.116-1.878l-.374-.312-.327.36c-.393.436-.606 1.04-.557 1.623.024.263.104.52.237.746a3.066 3.066 0 01-1.282.312H.782a.786.786 0 00-.78.792c-.025 1.455.235 2.91.782 4.26.663 1.583 1.652 2.753 2.94 3.478C5.268 23.36 7.236 24 9.535 24c5.21 0 9.186-2.418 11.307-6.83.93.018 2.926.009 3.95-1.965l.055-.102-.37-.245-.4-.51z" /></svg>
+);
+const LinuxLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#FCC624"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.368 1.884 1.43.585.047 1.042-.245 1.15-.688.054-.235-.015-.468-.064-.643.067-.249.193-.43.324-.716.2-.43.22-.596.366-.94.082-.197.18-.466.2-.745.026-.356-.04-.71-.154-.957a1.415 1.415 0 00-.397-.541c-.264-.194-.501-.396-.757-.529-.508-.285-.963-.695-1.378-1.25-.39-.519-.644-1.135-.87-1.635a5.89 5.89 0 01-.242-.577c-.161-.445-.384-.88-.474-1.207-.071-.34-.106-.776.107-1.24.155-.338.342-.556.494-.699.35-.326.573-.732.573-1.288 0-1.197-1.478-5.165-2.254-6.263C14.37.658 13.416 0 12.504 0z" /></svg>
+);
+const GitLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#F05032"><path d="M23.546 10.93L13.067.452a1.55 1.55 0 00-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 012.327 2.341l2.66 2.66a1.838 1.838 0 11-1.103 1.03l-2.48-2.48v6.53a1.838 1.838 0 11-1.512-.065V8.78a1.838 1.838 0 01-.998-2.41L7.629 3.64.452 10.818a1.55 1.55 0 000 2.188l10.48 10.48a1.55 1.55 0 002.186 0l10.428-10.43a1.55 1.55 0 000-2.187" /></svg>
+);
+const ActiveDirectoryLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#0078D4"><path d="M0 0h11.377v11.372H0zm12.623 0H24v11.372H12.623zM0 12.623h11.377V24H0zm12.623 0H24V24H12.623z" /></svg>
+);
+const WindowsServerLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#00ADEF"><rect x="1" y="1" width="10" height="10" rx="1" /><rect x="13" y="1" width="10" height="10" rx="1" /><rect x="1" y="13" width="10" height="10" rx="1" /><rect x="13" y="13" width="10" height="10" rx="1" /></svg>
+);
+const RestApiLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#6366F1"><path d="M7 7H5v2h2V7zm0 4H5v2h2v-2zm0 4H5v2h2v-2zm10-8h-6v2h6V7zm0 4h-6v2h6v-2zm0 4h-6v2h6v-2zm2-12H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h16v14z" /></svg>
+);
+const GANsLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#A855F7"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" /></svg>
+);
+const TransformersLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#FF6F00"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="8" y="14" width="8" height="7" rx="1" /><line x1="6.5" y1="10" x2="10" y2="14" stroke="#FF6F00" strokeWidth="1.5" /><line x1="17.5" y1="10" x2="14" y2="14" stroke="#FF6F00" strokeWidth="1.5" /></svg>
+);
+const ComputerVisionLogo = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} fill="#10B981"><circle cx="12" cy="12" r="3" /><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" fill="none" stroke="#10B981" strokeWidth="1.5" /><circle cx="12" cy="12" r="5.5" fill="none" stroke="#10B981" strokeWidth="1" /></svg>
+);
 
 interface Project {
   id: number;
@@ -351,24 +392,24 @@ const Home = () => {
           {[...Array(2)].map((_, setIndex) => (
             <div key={setIndex} className="flex items-center gap-12 px-6 shrink-0">
               {[
-                { name: 'Python', emoji: '🐍' },
-                { name: 'PyTorch', emoji: '🔥' },
-                { name: 'Django', emoji: '🎸' },
-                { name: 'PostgreSQL', emoji: '🐘' },
-                { name: 'Active Directory', emoji: '🔐' },
-                { name: 'Windows Server', emoji: '🖥️' },
-                { name: 'Docker', emoji: '🐳' },
-                { name: 'Linux', emoji: '🐧' },
-                { name: 'Git', emoji: '📦' },
-                { name: 'REST APIs', emoji: '🔗' },
-                { name: 'GANs', emoji: '🎨' },
-                { name: 'Transformers', emoji: '🤖' },
-                { name: 'Computer Vision', emoji: '👁️' },
-                { name: 'DaVinci Resolve', emoji: '🎬' },
-                { name: 'Photography', emoji: '📷' },
+                { name: 'Python', icon: PythonLogo },
+                { name: 'PyTorch', icon: PyTorchLogo },
+                { name: 'Django', icon: DjangoLogo },
+                { name: 'PostgreSQL', icon: PostgreSQLLogo },
+                { name: 'Active Directory', icon: ActiveDirectoryLogo },
+                { name: 'Windows Server', icon: WindowsServerLogo },
+                { name: 'Docker', icon: DockerLogo },
+                { name: 'Linux', icon: LinuxLogo },
+                { name: 'Git', icon: GitLogo },
+                { name: 'REST APIs', icon: RestApiLogo },
+                { name: 'GANs', icon: GANsLogo },
+                { name: 'Transformers', icon: TransformersLogo },
+                { name: 'Computer Vision', icon: ComputerVisionLogo },
+                { name: 'DaVinci Resolve', icon: Film },
+                { name: 'Photography', icon: Camera },
               ].map((tech) => (
                 <div key={`${setIndex}-${tech.name}`} className="flex items-center gap-3 group cursor-default">
-                  <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{tech.emoji}</span>
+                  <tech.icon className="w-6 h-6 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
                   <span className="text-lg font-medium text-gray-400 group-hover:text-gray-900 transition-colors duration-300 tracking-wide">
                     {tech.name}
                   </span>
