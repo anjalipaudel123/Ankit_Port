@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowRight, ArrowUpRight, Download, Github, Linkedin, X, CheckCircle2, Lightbulb, Target, Camera, Film } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
@@ -671,9 +672,9 @@ const Home = () => {
       </footer>
 
       {/* Project Detail Modal */}
-      {selectedProject && (
+      {selectedProject && createPortal(
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-8"
           onClick={() => setSelectedProject(null)}
         >
           {/* Backdrop */}
@@ -822,7 +823,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Animation Styles */}
