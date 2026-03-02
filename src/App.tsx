@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import Home from './sections/Home';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Terminal from './components/Terminal';
 import CustomCursor from './components/CustomCursor';
+import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'skills'>('home');
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     // Enhanced load animation with stagger
@@ -94,6 +97,17 @@ function App() {
                 Skills
               </button>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all duration-300 group"
+              aria-label="Toggle dark mode"
+              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              <Sun className={`w-4.5 h-4.5 absolute transition-all duration-500 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
+              <Moon className={`w-4.5 h-4.5 absolute transition-all duration-500 ${theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
+            </button>
           </div>
         </div>
       </nav>
