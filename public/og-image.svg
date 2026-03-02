@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="100%" stop-color="#131320"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="logo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="1" cy="1" r="0.5" fill="rgba(99,102,241,0.15)"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Accent line -->
+  <rect x="100" y="200" width="80" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- Logo mark -->
+  <rect x="100" y="120" width="52" height="52" rx="12" fill="url(#logo)"/>
+  <text x="126" y="155" font-family="Georgia, serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">A</text>
+
+  <!-- Name -->
+  <text x="100" y="260" font-family="Georgia, serif" font-size="56" font-weight="bold" fill="white">Ankit Paudel</text>
+
+  <!-- Title -->
+  <text x="100" y="310" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#9ca3af">IAM Intern  ·  ML Engineer  ·  Backend Developer</text>
+
+  <!-- Description -->
+  <text x="100" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#6b7280">Building intelligent systems with Python, PyTorch, Django</text>
+  <text x="100" y="398" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#6b7280">and enterprise IAM solutions at Paramount Computer Systems</text>
+
+  <!-- URL -->
+  <text x="100" y="530" font-family="ui-monospace, monospace" font-size="18" fill="#6366f1">ankitpaudel.me</text>
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="180" r="120" fill="none" stroke="rgba(99,102,241,0.1)" stroke-width="1"/>
+  <circle cx="1050" cy="180" r="80" fill="none" stroke="rgba(99,102,241,0.15)" stroke-width="1"/>
+  <circle cx="1050" cy="180" r="40" fill="none" stroke="rgba(99,102,241,0.2)" stroke-width="1.5"/>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="620" width="1200" height="10" fill="url(#accent)"/>
+</svg>
