@@ -117,7 +117,7 @@ function App() {
         </div>
       </nav>
 
-      <div className={`min-h-screen bg-white transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`min-h-screen bg-white transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {/* Page Content */}
         <main className="pt-20">
           <div
