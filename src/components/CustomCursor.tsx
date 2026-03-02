@@ -29,6 +29,7 @@ const CustomCursor = () => {
     const lastMoveRef = useRef(0);
     const velocityRef = useRef({ x: 0, y: 0 });
     const prevPosRef = useRef({ x: 0, y: 0 });
+    const isVisibleRef = useRef(false);
 
     // Spawn sparks on move
     const spawnSparks = useCallback((x: number, y: number, count: number, spread: number = 1) => {
@@ -80,7 +81,7 @@ const CustomCursor = () => {
                 x: e.clientX - prevPosRef.current.x,
                 y: e.clientY - prevPosRef.current.y,
             };
-            if (!isVisible) setIsVisible(true);
+            if (!isVisibleRef.current) { isVisibleRef.current = true; setIsVisible(true); }
 
             // Spawn trail sparks based on movement speed
             const speed = Math.sqrt(velocityRef.current.x ** 2 + velocityRef.current.y ** 2);
@@ -101,8 +102,11 @@ const CustomCursor = () => {
             spawnSparks(posRef.current.x, posRef.current.y, 25, 2.5);
         };
         const handleMouseUp = () => setIsClicking(false);
-        const handleMouseLeave = () => setIsVisible(false);
-        const handleMouseEnter = () => setIsVisible(true);
+        const handleMouseLeave = (e: MouseEvent) => {
+            // Only hide if truly leaving the browser window (relatedTarget is null)
+            if (!e.relatedTarget) { isVisibleRef.current = false; setIsVisible(false); }
+        };
+        const handleMouseEnter = () => { isVisibleRef.current = true; setIsVisible(true); };
 
         const handleMouseOver = (e: MouseEvent) => {
             const target = e.target as HTMLElement;
@@ -205,7 +209,7 @@ const CustomCursor = () => {
             window.removeEventListener('resize', resize);
             cancelAnimationFrame(rafId);
         };
-    }, [isVisible, spawnSparks]);
+    }, [spawnSparks]);
 
     if (isTouchDevice) return null;
 
