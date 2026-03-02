@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 
 // ─── Spark particle type ───
 interface Spark {
@@ -216,7 +217,7 @@ const CustomCursor = () => {
     // Portal sizes
     const portalSize = isClicking ? 56 : isHovering ? 60 : 44;
 
-    return (
+    return createPortal(
         <>
             {/* Canvas for sparks & trails */}
             <canvas
@@ -404,7 +405,8 @@ const CustomCursor = () => {
           100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
         }
       `}</style>
-        </>
+        </>,
+        document.body
     );
 };
 

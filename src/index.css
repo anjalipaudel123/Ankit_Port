@@ -1056,3 +1056,65 @@
 .gallery-float-slow-reverse {
   animation: galleryFloatSlowReverse 20s ease-in-out infinite;
 }
+
+/* ─── Inception Carousel ─── */
+.inception-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  margin-left: calc(-1 * clamp(140px, 27.5vw, 320px));
+  margin-top: calc(-1 * 240px / 2);
+}
+
+.inception-exit-front {
+  animation: inceptionExitFront 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inceptionExitFront {
+  0% {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateZ(200px) scale(1.15);
+  }
+}
+
+.inception-shift-forward {
+  animation: inceptionShiftForward 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inceptionShiftForward {
+
+  /* Layers move one step closer (z increases, scale increases) */
+  0% {
+    transform: var(--layer-transform, translateZ(0));
+  }
+
+  100% {
+    transform: var(--layer-transform-target, translateZ(0));
+  }
+}
+
+.inception-shift-back {
+  animation: inceptionShiftBack 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inceptionShiftBack {
+  0% {
+    opacity: 1;
+    transform: translateZ(0px) scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateZ(-120px) scale(0.87);
+  }
+}

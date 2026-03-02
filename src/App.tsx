@@ -272,7 +272,7 @@ function App() {
         <main className="pt-14 md:pt-20 pb-20 md:pb-0">
           <div
             key={currentPage}
-            className={`page-transition overflow-hidden ${getPageClasses()}`}
+            className={`page-transition overflow-x-hidden ${getPageClasses()}`}
           >
             {currentPage === 'home' && <Home />}
             {currentPage === 'about' && <About />}

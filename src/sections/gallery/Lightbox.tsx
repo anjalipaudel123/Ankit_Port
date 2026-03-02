@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { LightboxProps } from './types';
@@ -6,41 +6,65 @@ import { useLockBodyScroll } from '../../hooks/useScrollReveal';
 
 export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev, onSelect }: LightboxProps) {
     useLockBodyScroll(isOpen);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [displayIndex, setDisplayIndex] = useState(currentIndex);
+    const [visible, setVisible] = useState(true);
+    const [shownIndex, setShownIndex] = useState(currentIndex);
+    const transitioning = useRef(false);
 
-    const handleNext = useCallback(() => {
-        if (isAnimating) return;
-        setIsAnimating(true);
-        setTimeout(() => { onNext(); setIsAnimating(false); }, 300);
-    }, [isAnimating, onNext]);
+    // Preload adjacent images so they're ready instantly
+    useEffect(() => {
+        if (!isOpen) return;
+        const preload = (i: number) => {
+            if (i >= 0 && i < photos.length) {
+                const img = new Image();
+                img.src = photos[i].src;
+            }
+        };
+        preload(currentIndex - 1);
+        preload(currentIndex + 1);
+    }, [currentIndex, isOpen, photos]);
 
-    const handlePrev = useCallback(() => {
-        if (isAnimating) return;
-        setIsAnimating(true);
-        setTimeout(() => { onPrev(); setIsAnimating(false); }, 300);
-    }, [isAnimating, onPrev]);
+    // When currentIndex changes (from any source), do a quick fade-swap
+    useEffect(() => {
+        if (shownIndex === currentIndex) return;
+        if (transitioning.current) return;
+        transitioning.current = true;
+        setVisible(false); // fade out
+        const t = setTimeout(() => {
+            setShownIndex(currentIndex); // swap image while invisible
+            setVisible(true); // fade in
+            transitioning.current = false;
+        }, 200);
+        return () => { clearTimeout(t); transitioning.current = false; };
+    }, [currentIndex, shownIndex]);
+
+    // Reset when lightbox opens
+    useEffect(() => {
+        if (isOpen) {
+            setShownIndex(currentIndex);
+            setVisible(true);
+            transitioning.current = false;
+        }
+    }, [isOpen, currentIndex]);
+
+    const handleNav = useCallback((dir: 'next' | 'prev') => {
+        if (transitioning.current) return;
+        if (dir === 'next') onNext();
+        else onPrev();
+    }, [onNext, onPrev]);
 
     const handleKeyDown = useCallback((e: KeyboardEvent) => {
         if (!isOpen) return;
         if (e.key === 'Escape') onClose();
-        if (e.key === 'ArrowLeft') handlePrev();
-        if (e.key === 'ArrowRight') handleNext();
-    }, [isOpen, onClose, handlePrev, handleNext]);
+        if (e.key === 'ArrowLeft') handleNav('prev');
+        if (e.key === 'ArrowRight') handleNav('next');
+    }, [isOpen, onClose, handleNav]);
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleKeyDown]);
 
-    useEffect(() => {
-        if (currentIndex !== displayIndex && !isAnimating) {
-            setIsAnimating(true);
-            setTimeout(() => { setDisplayIndex(currentIndex); setIsAnimating(false); }, 300);
-        }
-    }, [currentIndex, displayIndex, isAnimating]);
-
-    const currentPhoto = photos[displayIndex];
+    const currentPhoto = photos[shownIndex];
     if (!isOpen || !currentPhoto) return null;
 
     return createPortal(
@@ -60,7 +84,7 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
             <button
                 className="absolute left-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:-translate-x-1 active:scale-90 gallery-slide-in-left"
                 style={{ animationDelay: '0.25s' }}
-                onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                onClick={(e) => { e.stopPropagation(); handleNav('prev'); }}
             >
                 <ChevronLeft className="w-6 h-6" />
             </button>
@@ -69,7 +93,7 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
             <button
                 className="absolute right-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:translate-x-1 active:scale-90 gallery-slide-in-right"
                 style={{ animationDelay: '0.25s' }}
-                onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                onClick={(e) => { e.stopPropagation(); handleNav('next'); }}
             >
                 <ChevronRight className="w-6 h-6" />
             </button>
@@ -80,12 +104,11 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
-                    className="relative max-w-full max-h-full transition-all duration-500"
+                    className="relative max-w-full max-h-full"
                     style={{
-                        opacity: isAnimating ? 0 : 1,
-                        transform: isAnimating ? 'rotateY(-30deg)' : 'rotateY(0)',
-                        transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
-                        perspective: '1500px',
+                        opacity: visible ? 1 : 0,
+                        transform: visible ? 'scale(1)' : 'scale(0.97)',
+                        transition: 'opacity 200ms ease, transform 200ms ease',
                     }}
                 >
                     <img
@@ -98,8 +121,11 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
 
             {/* Info */}
             <div
-                className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center gallery-fade-in-up"
-                style={{ animationDelay: '0.4s' }}
+                className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center"
+                style={{
+                    opacity: visible ? 1 : 0,
+                    transition: 'opacity 200ms ease',
+                }}
             >
                 <h3 className="text-2xl font-semibold text-white mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {currentPhoto.title}
