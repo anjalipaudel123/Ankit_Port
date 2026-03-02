@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import Home from './sections/Home';
 import About from './sections/About';
+import Skills from './sections/Skills';
 import Terminal from './components/Terminal';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'about'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'skills'>('home');
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -29,7 +30,7 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handlePageChange = (page: 'home' | 'about') => {
+  const handlePageChange = (page: 'home' | 'about' | 'skills') => {
     if (page === currentPage) return;
 
     setIsTransitioning(true);
@@ -82,6 +83,15 @@ function App() {
               >
                 About
               </button>
+              <button
+                onClick={() => handlePageChange('skills')}
+                className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'skills'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                Skills
+              </button>
             </div>
           </div>
         </div>
@@ -94,7 +104,9 @@ function App() {
             key={currentPage}
             className={`transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
           >
-            {currentPage === 'home' ? <Home /> : <About />}
+            {currentPage === 'home' && <Home />}
+            {currentPage === 'about' && <About />}
+            {currentPage === 'skills' && <Skills />}
           </div>
         </main>
       </div>
