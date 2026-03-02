@@ -206,6 +206,41 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Tech Stack Marquee */}
+      <section className="py-12 overflow-hidden border-y border-gray-100 bg-gray-50/50">
+        <div className="flex animate-marquee whitespace-nowrap">
+          {[...Array(2)].map((_, setIndex) => (
+            <div key={setIndex} className="flex items-center gap-12 px-6 shrink-0">
+              {[
+                { name: 'Python', emoji: '🐍' },
+                { name: 'PyTorch', emoji: '🔥' },
+                { name: 'Django', emoji: '🎸' },
+                { name: 'PostgreSQL', emoji: '🐘' },
+                { name: 'Active Directory', emoji: '🔐' },
+                { name: 'Windows Server', emoji: '🖥️' },
+                { name: 'Docker', emoji: '🐳' },
+                { name: 'Linux', emoji: '🐧' },
+                { name: 'Git', emoji: '📦' },
+                { name: 'REST APIs', emoji: '🔗' },
+                { name: 'GANs', emoji: '🎨' },
+                { name: 'Transformers', emoji: '🤖' },
+                { name: 'Computer Vision', emoji: '👁️' },
+                { name: 'DaVinci Resolve', emoji: '🎬' },
+                { name: 'Photography', emoji: '📷' },
+              ].map((tech) => (
+                <div key={`${setIndex}-${tech.name}`} className="flex items-center gap-3 group cursor-default">
+                  <span className="text-2xl group-hover:scale-125 transition-transform duration-300">{tech.emoji}</span>
+                  <span className="text-lg font-medium text-gray-400 group-hover:text-gray-900 transition-colors duration-300 tracking-wide">
+                    {tech.name}
+                  </span>
+                  <span className="text-gray-200 text-2xl font-thin ml-6">·</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Projects Section */}
       <section
         ref={projectsRef}

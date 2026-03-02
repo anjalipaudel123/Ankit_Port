@@ -235,6 +235,51 @@ const About = () => {
         </div>
       </section>
 
+      {/* Tools I Use — Marquee */}
+      <section className="py-10 overflow-hidden">
+        <p className="text-center text-xs font-medium text-gray-400 uppercase tracking-[0.2em] mb-6">Tools & technologies I use daily</p>
+
+        {/* Row 1 — scrolls left */}
+        <div className="flex animate-marquee whitespace-nowrap mb-4">
+          {[...Array(2)].map((_, setIndex) => (
+            <div key={setIndex} className="flex items-center gap-4 px-4 shrink-0">
+              {[
+                'Python', 'PyTorch', 'Django', 'DRF', 'PostgreSQL',
+                'Active Directory', 'Windows Server', 'Kerberos',
+                'Docker', 'Linux', 'Git', 'REST APIs',
+              ].map((tool) => (
+                <span
+                  key={`${setIndex}-${tool}`}
+                  className="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-300 cursor-default"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div className="flex animate-marquee-reverse whitespace-nowrap">
+          {[...Array(2)].map((_, setIndex) => (
+            <div key={setIndex} className="flex items-center gap-4 px-4 shrink-0">
+              {[
+                'GANs', 'VAEs', 'Transformers', 'Computer Vision', 'NLP',
+                'GradCAM', 'Jupyter', 'NumPy', 'Pandas',
+                'DaVinci Resolve', 'Photography', 'Color Grading',
+              ].map((tool) => (
+                <span
+                  key={`${setIndex}-${tool}`}
+                  className="inline-flex items-center px-5 py-2.5 rounded-full text-sm font-medium text-gray-600 bg-gray-100 hover:bg-purple-100 hover:text-purple-700 transition-colors duration-300 cursor-default"
+                >
+                  {tool}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Experience Section */}
       <section
         ref={expRef}
