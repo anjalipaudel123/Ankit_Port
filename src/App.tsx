@@ -3,6 +3,7 @@ import Home from './sections/Home';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Terminal from './components/Terminal';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'skills'>('home');
@@ -124,6 +125,9 @@ function App() {
         <span className="hidden sm:inline">Press ` for terminal</span>
         <span className="sm:hidden">Terminal</span>
       </button>
+
+      {/* Custom Cursor */}
+      <CustomCursor />
     </>
   );
 }
