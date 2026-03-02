@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Briefcase, User, Zap, Terminal as TerminalIcon } from 'lucide-react';
 import Home from './sections/Home';
 import About from './sections/About';
 import Skills from './sections/Skills';
@@ -73,8 +73,8 @@ function App() {
       {/* Loading Screen */}
       {showLoader && <LoadingScreen onComplete={handleLoadingComplete} />}
 
-      {/* Navigation - outside main wrapper to prevent transform breaking fixed positioning */}
-      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-lg shadow-gray-900/5">
+      {/* ═══ Desktop Top Navigation (hidden on mobile) ═══ */}
+      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-lg shadow-gray-900/5 hidden md:block">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -138,9 +138,109 @@ function App() {
         </div>
       </nav>
 
+      {/* ═══ Mobile Top Bar (visible only on mobile) ═══ */}
+      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-sm md:hidden">
+        <div className="flex items-center justify-between h-14 px-4">
+          <button
+            onClick={() => handlePageChange('home')}
+            className="group"
+          >
+            <span className="text-base font-bold text-gray-900 tracking-tight">
+              Ankit Paudel
+            </span>
+          </button>
+          <button
+            onClick={toggleTheme}
+            className="relative w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 text-gray-600"
+            aria-label="Toggle dark mode"
+          >
+            <Sun className={`w-4 h-4 absolute transition-all duration-500 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
+            <Moon className={`w-4 h-4 absolute transition-all duration-500 ${theme === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-0'}`} />
+          </button>
+        </div>
+      </nav>
+
+      {/* ═══ Mobile Bottom Tab Bar ═══ */}
+      <div className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden">
+        {/* Glass backdrop */}
+        <div className="bg-white/90 backdrop-blur-xl border-t border-gray-200/60 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
+            {/* Work Tab */}
+            <button
+              onClick={() => handlePageChange('home')}
+              className="mobile-tab group relative flex flex-col items-center justify-center flex-1 h-full"
+            >
+              <div className={`relative transition-all duration-300 ${currentPage === 'home' ? 'scale-110' : 'scale-100'}`}>
+                <Briefcase className={`w-5 h-5 transition-colors duration-300 ${currentPage === 'home' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                {currentPage === 'home' && (
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                )}
+              </div>
+              <span className={`text-[10px] mt-1 font-medium transition-colors duration-300 ${currentPage === 'home' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                Work
+              </span>
+              {currentPage === 'home' && (
+                <div className="absolute -bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" />
+              )}
+            </button>
+
+            {/* About Tab */}
+            <button
+              onClick={() => handlePageChange('about')}
+              className="mobile-tab group relative flex flex-col items-center justify-center flex-1 h-full"
+            >
+              <div className={`relative transition-all duration-300 ${currentPage === 'about' ? 'scale-110' : 'scale-100'}`}>
+                <User className={`w-5 h-5 transition-colors duration-300 ${currentPage === 'about' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                {currentPage === 'about' && (
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                )}
+              </div>
+              <span className={`text-[10px] mt-1 font-medium transition-colors duration-300 ${currentPage === 'about' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                About
+              </span>
+              {currentPage === 'about' && (
+                <div className="absolute -bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" />
+              )}
+            </button>
+
+            {/* Skills Tab */}
+            <button
+              onClick={() => handlePageChange('skills')}
+              className="mobile-tab group relative flex flex-col items-center justify-center flex-1 h-full"
+            >
+              <div className={`relative transition-all duration-300 ${currentPage === 'skills' ? 'scale-110' : 'scale-100'}`}>
+                <Zap className={`w-5 h-5 transition-colors duration-300 ${currentPage === 'skills' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                {currentPage === 'skills' && (
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                )}
+              </div>
+              <span className={`text-[10px] mt-1 font-medium transition-colors duration-300 ${currentPage === 'skills' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                Skills
+              </span>
+              {currentPage === 'skills' && (
+                <div className="absolute -bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" />
+              )}
+            </button>
+
+            {/* Terminal Tab */}
+            <button
+              onClick={() => setTerminalOpen(true)}
+              className="mobile-tab group relative flex flex-col items-center justify-center flex-1 h-full"
+            >
+              <TerminalIcon className="w-5 h-5 text-gray-400 group-hover:text-emerald-500 transition-colors duration-300" />
+              <span className="text-[10px] mt-1 font-medium text-gray-400 group-hover:text-emerald-500 transition-colors duration-300">
+                Terminal
+              </span>
+            </button>
+          </div>
+        </div>
+        {/* Safe area padding for notched phones */}
+        <div className="bg-white/90 backdrop-blur-xl h-[env(safe-area-inset-bottom)]" />
+      </div>
+
       <div className={`min-h-screen bg-white transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-        {/* Page Content */}
-        <main className="pt-20 overflow-hidden">
+        {/* Page Content — pt-14 on mobile (slim top bar), pt-20 on desktop, pb-20 on mobile (bottom tab bar) */}
+        <main className="pt-14 md:pt-20 pb-20 md:pb-0 overflow-hidden">
           <div
             key={currentPage}
             className={`page-transition ${getPageClasses()}`}
@@ -155,15 +255,14 @@ function App() {
       {/* Terminal Easter Egg */}
       <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
 
-      {/* Terminal Hint - bottom right */}
+      {/* Terminal Hint - bottom right (desktop only — mobile has it in tab bar) */}
       <button
         onClick={() => setTerminalOpen(true)}
-        className="fixed bottom-6 right-6 z-[9998] group flex items-center gap-2 px-3 py-2 bg-gray-900 text-gray-400 rounded-full text-xs font-mono hover:bg-gray-800 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl opacity-60 hover:opacity-100"
+        className="hidden md:flex fixed bottom-6 right-6 z-[9998] group items-center gap-2 px-3 py-2 bg-gray-900 text-gray-400 rounded-full text-xs font-mono hover:bg-gray-800 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl opacity-60 hover:opacity-100"
         title="Open terminal"
       >
         <span className="text-emerald-400">$</span>
-        <span className="hidden sm:inline">Press ` for terminal</span>
-        <span className="sm:hidden">Terminal</span>
+        <span>Press ` for terminal</span>
       </button>
 
       {/* Custom Cursor */}

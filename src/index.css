@@ -820,6 +820,11 @@
   color: #6a6a82 !important;
 }
 
+/* ─── Mobile Bottom Tab Bar dark mode ─── */
+.dark .mobile-tab span {
+  color: inherit !important;
+}
+
 /* Indigo accents stay the same — they pop on dark backgrounds */
 
 /* Smooth transition for all elements when switching themes */
