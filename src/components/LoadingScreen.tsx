@@ -293,7 +293,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
                         Ankit Paudel
                     </h1>
                     <p className="text-xs text-amber-300/70 tracking-[0.25em] uppercase">
-                        Entering the Multiverse
+                        Where Identity Meets Intelligence
                     </p>
                 </div>
             </div>
