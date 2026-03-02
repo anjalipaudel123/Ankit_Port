@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { LightboxProps } from './types';
 import { useLockBodyScroll } from '../../hooks/useScrollReveal';
@@ -42,7 +43,7 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
     const currentPhoto = photos[displayIndex];
     if (!isOpen || !currentPhoto) return null;
 
-    return (
+    return createPortal(
         <div className="gallery-lightbox-backdrop gallery-fade-in" onClick={onClose}>
             <div className="absolute inset-0 bg-black/95" />
 
@@ -132,6 +133,7 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
                     </button>
                 ))}
             </div>
-        </div>
+        </div>,
+        document.body
     );
 }
