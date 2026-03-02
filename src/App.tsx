@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import Home from './sections/Home';
 import About from './sections/About';
@@ -8,13 +8,18 @@ import CustomCursor from './components/CustomCursor';
 import LoadingScreen from './components/LoadingScreen';
 import { useTheme } from './hooks/useTheme';
 
+type Page = 'home' | 'about' | 'skills';
+const PAGE_ORDER: Page[] = ['home', 'about', 'skills'];
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'skills'>('home');
+  const [currentPage, setCurrentPage] = useState<Page>('home');
   const [showLoader, setShowLoader] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [transitionState, setTransitionState] = useState<'idle' | 'exit' | 'enter'>('idle');
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right');
   const [terminalOpen, setTerminalOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const pendingPageRef = useRef<Page | null>(null);
 
   const handleLoadingComplete = useCallback(() => {
     setShowLoader(false);
@@ -36,15 +41,45 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handlePageChange = (page: 'home' | 'about' | 'skills') => {
-    if (page === currentPage) return;
+  const handlePageChange = (page: Page) => {
+    if (page === currentPage || transitionState !== 'idle') return;
 
-    setIsTransitioning(true);
+    // Determine slide direction based on page order
+    const currentIdx = PAGE_ORDER.indexOf(currentPage);
+    const nextIdx = PAGE_ORDER.indexOf(page);
+    setSlideDirection(nextIdx > currentIdx ? 'right' : 'left');
+    pendingPageRef.current = page;
+
+    // Phase 1: Exit current page
+    setTransitionState('exit');
+
     setTimeout(() => {
+      // Phase 2: Swap page while offscreen
       setCurrentPage(page);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => setIsTransitioning(false), 100);
-    }, 300);
+      window.scrollTo({ top: 0 });
+      setTransitionState('enter');
+
+      // Phase 3: Enter new page
+      setTimeout(() => {
+        setTransitionState('idle');
+        pendingPageRef.current = null;
+      }, 500);
+    }, 350);
+  };
+
+  // Build transition classes
+  const getPageClasses = () => {
+    if (transitionState === 'exit') {
+      return slideDirection === 'right'
+        ? 'page-exit-left'
+        : 'page-exit-right';
+    }
+    if (transitionState === 'enter') {
+      return slideDirection === 'right'
+        ? 'page-enter-right'
+        : 'page-enter-left';
+    }
+    return 'page-idle';
   };
 
   return (
@@ -119,10 +154,10 @@ function App() {
 
       <div className={`min-h-screen bg-white transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {/* Page Content */}
-        <main className="pt-20">
+        <main className="pt-20 overflow-hidden">
           <div
             key={currentPage}
-            className={`transition-opacity duration-500 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+            className={`page-transition ${getPageClasses()}`}
           >
             {currentPage === 'home' && <Home />}
             {currentPage === 'about' && <About />}
