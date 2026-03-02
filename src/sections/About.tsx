@@ -615,7 +615,7 @@ const About = () => {
 
           <div className="mt-8 pt-8 border-t border-gray-800 text-center">
             <p className="text-sm text-gray-500">
-              © 2026 Ankit Paudel. Crafted with passion in Kathmandu, Nepal.
+              © 2026 Ankit Paudel.
             </p>
           </div>
         </div>

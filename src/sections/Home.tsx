@@ -662,7 +662,7 @@ const Home = () => {
 
           <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <p className="text-sm text-gray-400">
-              © 2026 Ankit Paudel. Crafted with passion.
+              © 2026 Ankit Paudel.
             </p>
             <p className="text-sm text-gray-400">
               Kathmandu, Nepal
