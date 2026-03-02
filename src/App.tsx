@@ -1,22 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import Home from './sections/Home';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Terminal from './components/Terminal';
 import CustomCursor from './components/CustomCursor';
+import LoadingScreen from './components/LoadingScreen';
 import { useTheme } from './hooks/useTheme';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'about' | 'skills'>('home');
+  const [showLoader, setShowLoader] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [terminalOpen, setTerminalOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    // Enhanced load animation with stagger
-    setTimeout(() => setIsLoaded(true), 150);
+  const handleLoadingComplete = useCallback(() => {
+    setShowLoader(false);
+    setTimeout(() => setIsLoaded(true), 50);
   }, []);
 
   // Terminal toggle with backtick key
@@ -47,6 +49,9 @@ function App() {
 
   return (
     <>
+      {/* Loading Screen */}
+      {showLoader && <LoadingScreen onComplete={handleLoadingComplete} />}
+
       {/* Navigation - outside main wrapper to prevent transform breaking fixed positioning */}
       <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-lg shadow-gray-900/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
