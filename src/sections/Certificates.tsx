@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { ChevronLeft, ChevronRight, X, Award, Shield, Server, Globe, Network, Monitor, ZoomIn } from 'lucide-react';
+import { X, Award, Shield, Server, Globe, Network, Monitor, ZoomIn } from 'lucide-react';
 
 interface Certificate {
     id: number;
@@ -69,6 +69,9 @@ const certificates: Certificate[] = [
     },
 ];
 
+// Duplicate for seamless loop
+const loopCerts = [...certificates, ...certificates];
+
 // Lightbox component — portaled to body
 function CertLightbox({ cert, onClose }: { cert: Certificate; onClose: () => void }) {
     const [loaded, setLoaded] = useState(false);
@@ -91,24 +94,17 @@ function CertLightbox({ cert, onClose }: { cert: Certificate; onClose: () => voi
             style={{ zIndex: 10000 }}
             onClick={onClose}
         >
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-black/90 backdrop-blur-xl animate-[fadeIn_0.2s_ease]" />
-
-            {/* Close */}
             <button
                 onClick={onClose}
                 className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
             >
                 <X className="w-5 h-5" />
             </button>
-
-            {/* Title */}
             <div className="absolute top-4 left-4 z-10">
                 <h3 className="text-white/80 text-sm font-medium">{cert.title}</h3>
                 <p className="text-white/40 text-xs">{cert.category}</p>
             </div>
-
-            {/* Image */}
             <div
                 className="relative z-10 max-w-5xl w-full max-h-[85vh] flex items-center justify-center"
                 onClick={(e) => e.stopPropagation()}
@@ -133,71 +129,24 @@ function CertLightbox({ cert, onClose }: { cert: Certificate; onClose: () => voi
 }
 
 export default function Certificates() {
-    const [activeIndex, setActiveIndex] = useState(0);
     const [lightboxCert, setLightboxCert] = useState<Certificate | null>(null);
-    const transitioningRef = useRef(false);
-    const autoplayRef = useRef<ReturnType<typeof setInterval>>(undefined);
-    const total = certificates.length;
+    const [isPaused, setIsPaused] = useState(false);
+    const trackRef = useRef<HTMLDivElement>(null);
 
-    const navigate = useCallback((dir: 'left' | 'right') => {
-        if (transitioningRef.current) return;
-        transitioningRef.current = true;
-
-        setActiveIndex(prev =>
-            dir === 'right'
-                ? (prev + 1) % total
-                : (prev - 1 + total) % total
-        );
-
-        setTimeout(() => {
-            transitioningRef.current = false;
-        }, 600);
-    }, [total]);
-
-    // Slow autoplay — glides every 3s
+    // Pause animation when lightbox is open
     useEffect(() => {
-        autoplayRef.current = setInterval(() => navigate('right'), 3000);
-        return () => clearInterval(autoplayRef.current);
-    }, [navigate]);
-
-    const pauseAutoplay = () => clearInterval(autoplayRef.current);
-    const resumeAutoplay = () => {
-        clearInterval(autoplayRef.current);
-        autoplayRef.current = setInterval(() => navigate('right'), 3000);
-    };
-
-    // Keyboard
-    useEffect(() => {
-        const handleKey = (e: KeyboardEvent) => {
-            if (lightboxCert) return;
-            if (e.key === 'ArrowLeft') navigate('left');
-            if (e.key === 'ArrowRight') navigate('right');
-        };
-        window.addEventListener('keydown', handleKey);
-        return () => window.removeEventListener('keydown', handleKey);
-    }, [navigate, lightboxCert]);
-
-    const goTo = (index: number) => {
-        if (transitioningRef.current || index === activeIndex) return;
-        transitioningRef.current = true;
-        setActiveIndex(index);
-        setTimeout(() => {
-            transitioningRef.current = false;
-        }, 600);
-    };
-
-    const cert = certificates[activeIndex];
-
-    const getStackIndex = (offset: number) => ((activeIndex + offset) % total + total) % total;
+        if (lightboxCert) setIsPaused(true);
+        else setIsPaused(false);
+    }, [lightboxCert]);
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
             {/* Ambient glow */}
             <div className="fixed inset-0 pointer-events-none">
                 <div
-                    className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full transition-all duration-1000 ease-out"
+                    className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full"
                     style={{
-                        background: `radial-gradient(circle, ${cert.glowColor} 0%, transparent 70%)`,
+                        background: 'radial-gradient(circle, rgba(245,158,11,0.15) 0%, rgba(139,92,246,0.1) 40%, transparent 70%)',
                         filter: 'blur(100px)',
                     }}
                 />
@@ -224,91 +173,80 @@ export default function Certificates() {
                     </p>
                 </section>
 
-                {/* 3D Image Carousel */}
-                <section
-                    className="relative py-8 md:py-16 px-4"
-                    onMouseEnter={pauseAutoplay}
-                    onMouseLeave={resumeAutoplay}
-                >
-                    <div className="relative max-w-6xl mx-auto" style={{ perspective: '1400px' }}>
-                        <div className="relative flex items-center justify-center" style={{ height: '480px' }}>
-                            {[-2, -1, 0, 1, 2].map((offset) => {
-                                const idx = getStackIndex(offset);
-                                const c = certificates[idx];
+                {/* Infinite Train Carousel */}
+                <section className="relative py-10 md:py-20">
+                    {/* Fade edges */}
+                    <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-r from-[#0a0a0a] to-transparent" />
+                    <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-[#0a0a0a] to-transparent" />
+
+                    <div
+                        className="overflow-hidden"
+                        onMouseEnter={() => setIsPaused(true)}
+                        onMouseLeave={() => { if (!lightboxCert) setIsPaused(false); }}
+                    >
+                        <div
+                            ref={trackRef}
+                            className="flex gap-6 md:gap-8"
+                            style={{
+                                animation: 'cert-train 40s linear infinite',
+                                animationPlayState: isPaused ? 'paused' : 'running',
+                                width: 'max-content',
+                            }}
+                        >
+                            {loopCerts.map((c, i) => {
                                 const CertIcon = c.icon;
-                                const isCenter = offset === 0;
-                                const absOffset = Math.abs(offset);
-
-                                const translateX = offset * 260;
-                                const translateZ = -absOffset * 180;
-                                const rotateY = offset * -12;
-                                const opacity = isCenter ? 1 : Math.max(0.15, 1 - absOffset * 0.4);
-                                const scale = isCenter ? 1 : Math.max(0.7, 1 - absOffset * 0.15);
-
                                 return (
                                     <div
-                                        key={`card-${offset}`}
-                                        className="absolute"
-                                        style={{
-                                            transform: `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
-                                            opacity,
-                                            zIndex: 10 - absOffset,
-                                            transition: 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                                            transformStyle: 'preserve-3d',
-                                            width: 'clamp(280px, 42vw, 400px)',
-                                        }}
+                                        key={`${c.id}-${i}`}
+                                        className="shrink-0 group cursor-pointer"
+                                        style={{ width: 'clamp(300px, 38vw, 420px)' }}
+                                        onClick={() => setLightboxCert(c)}
                                     >
                                         <div
-                                            className={`relative rounded-2xl overflow-hidden border transition-all duration-700 group ${isCenter
-                                                    ? 'border-white/20 shadow-2xl cursor-pointer'
-                                                    : 'border-white/5 shadow-lg cursor-pointer'
-                                                }`}
+                                            className="relative rounded-2xl overflow-hidden border border-white/5 hover:border-white/20 transition-all duration-500"
                                             style={{
                                                 background: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%)',
                                                 backdropFilter: 'blur(20px)',
-                                                boxShadow: isCenter
-                                                    ? `0 30px 80px rgba(0,0,0,0.5), 0 0 60px ${c.glowColor}`
-                                                    : '0 10px 30px rgba(0,0,0,0.3)',
+                                                boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
                                             }}
-                                            onClick={() => isCenter ? setLightboxCert(c) : goTo(idx)}
                                         >
                                             {/* Certificate image */}
                                             <div className="relative aspect-[4/3] bg-black/30 overflow-hidden">
                                                 <img
                                                     src={c.image}
                                                     alt={c.title}
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                                     loading="lazy"
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-                                                {isCenter && (
-                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300">
-                                                        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-300">
-                                                            <ZoomIn className="w-5 h-5 text-white" />
-                                                        </div>
+                                                {/* Zoom hint */}
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-all duration-300">
+                                                    <div className="w-14 h-14 rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-500">
+                                                        <ZoomIn className="w-6 h-6 text-white" />
                                                     </div>
-                                                )}
+                                                </div>
 
+                                                {/* Category badge */}
                                                 <div className="absolute top-3 right-3">
                                                     <span className={`px-3 py-1 bg-gradient-to-r ${c.color} rounded-full text-[10px] uppercase tracking-wider text-white font-medium shadow-lg`}>
                                                         {c.category}
                                                     </span>
                                                 </div>
-                                            </div>
 
-                                            {/* Card info */}
-                                            <div className="p-4 flex items-center gap-3">
-                                                <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${c.color} flex items-center justify-center shrink-0`}>
-                                                    <CertIcon className="w-4 h-4 text-white" />
-                                                </div>
-                                                <div className="min-w-0">
-                                                    <h3
-                                                        className="text-sm font-semibold text-white truncate"
-                                                        style={{ fontFamily: "'Playfair Display', serif" }}
-                                                    >
-                                                        {c.title}
-                                                    </h3>
+                                                {/* Bottom info overlay */}
+                                                <div className="absolute bottom-0 left-0 right-0 p-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${c.color} flex items-center justify-center shrink-0 shadow-lg`}>
+                                                            <CertIcon className="w-5 h-5 text-white" />
+                                                        </div>
+                                                        <h3
+                                                            className="text-sm md:text-base font-semibold text-white drop-shadow-lg"
+                                                            style={{ fontFamily: "'Playfair Display', serif" }}
+                                                        >
+                                                            {c.title}
+                                                        </h3>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,36 +254,6 @@ export default function Certificates() {
                                 );
                             })}
                         </div>
-                    </div>
-
-                    {/* Navigation */}
-                    <div className="flex items-center justify-center gap-4 mt-6">
-                        <button
-                            onClick={() => navigate('left')}
-                            className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-300 hover:scale-110 active:scale-90"
-                        >
-                            <ChevronLeft className="w-5 h-5" />
-                        </button>
-
-                        <div className="flex items-center gap-2">
-                            {certificates.map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => goTo(i)}
-                                    className={`rounded-full transition-all duration-700 ${i === activeIndex
-                                            ? 'w-8 h-2 bg-gradient-to-r from-amber-400 to-orange-500'
-                                            : 'w-2 h-2 bg-white/20 hover:bg-white/40'
-                                        }`}
-                                />
-                            ))}
-                        </div>
-
-                        <button
-                            onClick={() => navigate('right')}
-                            className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all duration-300 hover:scale-110 active:scale-90"
-                        >
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
                     </div>
                 </section>
 
