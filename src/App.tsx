@@ -13,7 +13,12 @@ import { useTheme } from './hooks/useTheme';
 type Page = 'home' | 'about' | 'skills' | 'gallery' | 'certs';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const getInitialPage = (): Page => {
+    if (window.location.hash === '#certs') return 'certs';
+    return 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState<Page>(getInitialPage);
   const [showLoader, setShowLoader] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
   const [transitionState, setTransitionState] = useState<'idle' | 'exit' | 'enter'>('idle');
@@ -25,6 +30,15 @@ function App() {
     setShowLoader(false);
     setTimeout(() => setIsLoaded(true), 50);
   }, []);
+
+  // Sync URL hash for certs page (shareable link)
+  useEffect(() => {
+    if (currentPage === 'certs') {
+      window.history.replaceState(null, '', '#certs');
+    } else if (window.location.hash === '#certs') {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, [currentPage]);
 
   // Terminal toggle with backtick key
   useEffect(() => {
