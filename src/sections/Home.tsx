@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { ArrowRight, ArrowUpRight, Download, Github, Linkedin, X, CheckCircle2, Lightbulb, Target, Camera, Film } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Download, Github, Linkedin, X, CheckCircle2, Lightbulb, Target, Camera, Film, ExternalLink, Play } from 'lucide-react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // Inline SVG tech logos for marquee
@@ -56,6 +56,7 @@ interface Project {
   approach?: string[];
   results?: string[];
   keyFeatures?: string[];
+  demoUrl?: string;
 }
 
 const Home = () => {
@@ -130,6 +131,7 @@ const Home = () => {
         'QWK-based evaluation pipeline',
         'End-to-end training on Colab A100',
       ],
+      demoUrl: 'https://huggingface.co/spaces/imankitpaudel9988/ielts-essay-grader',
     },
     {
       id: 2,
@@ -448,16 +450,31 @@ const Home = () => {
                   </div>
 
                   {/* CTA */}
-                  <button
-                    onClick={() => setSelectedProject(project)}
-                    className="group/btn inline-flex items-center gap-2 text-gray-900 font-medium hover:text-indigo-600 transition-colors"
-                  >
-                    <span className="relative">
-                      Read case study
-                      <span className="absolute bottom-0 left-0 w-full h-px bg-current transform origin-left scale-x-0 group-hover/btn:scale-x-100 transition-transform" />
-                    </span>
-                    <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                  </button>
+                  <div className="flex items-center gap-4 flex-wrap">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="group/btn inline-flex items-center gap-2 text-gray-900 font-medium hover:text-indigo-600 transition-colors"
+                    >
+                      <span className="relative">
+                        Read case study
+                        <span className="absolute bottom-0 left-0 w-full h-px bg-current transform origin-left scale-x-0 group-hover/btn:scale-x-100 transition-transform" />
+                      </span>
+                      <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                    </button>
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="group/demo inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-medium rounded-full hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-current" />
+                        Try Live Demo
+                        <ExternalLink className="w-3.5 h-3.5 group-hover/demo:translate-x-0.5 group-hover/demo:-translate-y-0.5 transition-transform" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
@@ -687,6 +704,38 @@ const Home = () => {
                         </div>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* Live Demo */}
+                {selectedProject.demoUrl && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <Play className="w-5 h-5 text-cyan-500 fill-cyan-500" />
+                        <h3 className="text-lg font-semibold text-gray-900">Live Demo</h3>
+                      </div>
+                      <a
+                        href={selectedProject.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm text-cyan-600 hover:text-cyan-700 font-medium transition-colors"
+                      >
+                        Open in new tab
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                    <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-gray-50">
+                      <iframe
+                        src="https://imankitpaudel9988-ielts-essay-grader.hf.space"
+                        className="w-full border-0"
+                        style={{ height: '680px' }}
+                        title="IELTS Essay Grader Live Demo"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope"
+                        loading="lazy"
+                      />
+                    </div>
+                    <p className="mt-2 text-xs text-gray-400 text-center">Powered by Hugging Face Spaces — may take a moment to load on first visit</p>
                   </div>
                 )}
 
