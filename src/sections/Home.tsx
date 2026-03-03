@@ -66,7 +66,6 @@ const Home = () => {
 
   const { ref: introRef, isVisible: introVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: projectsRef, isVisible: projectsVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.1 });
-  const { ref: passionRef, isVisible: passionVisible } = useScrollReveal<HTMLDivElement>();
   const { ref: ctaRef, isVisible: ctaVisible } = useScrollReveal<HTMLDivElement>();
 
   useEffect(() => {
@@ -103,191 +102,126 @@ const Home = () => {
   const projects: Project[] = [
     {
       id: 1,
-      title: 'E-Learning Platform',
-      subtitle: 'AI-powered personalized learning',
-      description: 'A full-stack learning management system with intelligent course recommendations, progress tracking, and seamless user experience.',
+      title: 'IELTS-Calibrated Essay Scoring',
+      subtitle: 'Transformer-based automated essay grading',
+      description: 'A solo research project building an automated essay scoring system using DeBERTa v3 Large, fine-tuned on the ASAP dataset with a custom calibration layer that maps predictions to 0–100 scores and IELTS Band 1–9.',
       painPoints: [
-        'Students overwhelmed by course catalogs with no personalization',
-        'Low engagement due to irrelevant content suggestions',
-        'Instructors lacked data on student learning patterns',
+        'Manual essay scoring is slow, subjective, and inconsistent across evaluators',
+        'Existing AES systems lack mapping to real-world scoring scales like IELTS',
+        'Hard to trust model outputs without agreement-aware evaluation metrics',
       ],
-      image: '/project-elearning.jpg',
-      tags: ['Django', 'DRF', 'PyTorch', 'PostgreSQL'],
-      color: 'from-violet-500 to-purple-600',
+      image: '/project-debert.jpg',
+      tags: ['PyTorch', 'Transformers', 'DeBERTa v3', 'NLP'],
+      color: 'from-cyan-500 to-blue-600',
       approach: [
-        'Built collaborative filtering + content-based hybrid recommendation engine in PyTorch',
-        'Designed RESTful API with Django REST Framework for seamless frontend integration',
-        'Implemented real-time progress tracking with WebSocket connections',
-        'PostgreSQL with optimized queries for handling 10k+ course catalog',
+        'Fine-tuned DeBERTa v3 Large on the ASAP essay scoring dataset',
+        'Added a custom calibration layer to map raw predictions to 0–100 and IELTS Band 1–9',
+        'Trained on Google Colab with A100 GPU for efficient large-model fine-tuning',
+        'Evaluated using Quadratic Weighted Kappa (QWK) — an agreement-aware metric used in scoring research',
       ],
       results: [
-        '40% improvement in course completion rates with personalized paths',
-        'Sub-200ms API response times under concurrent load',
-        'Recommendation accuracy of 82% measured by user engagement metrics',
+        'Achieved QWK of 0.80+ on the evaluation set',
+        'Scores map cleanly to interpretable IELTS-style bands',
+        'Research-grade evaluation pipeline built from scratch',
       ],
       keyFeatures: [
-        'AI-powered course recommendations',
-        'Real-time progress dashboards',
-        'Instructor analytics portal',
-        'Adaptive learning paths',
+        'DeBERTa v3 Large fine-tuning',
+        'Custom IELTS band calibration layer',
+        'QWK-based evaluation pipeline',
+        'End-to-end training on Colab A100',
       ],
     },
     {
       id: 2,
-      title: 'Sketch-to-Image GAN',
-      subtitle: 'Generative AI for artists',
-      description: 'Custom GAN architecture that transforms rough sketches into photorealistic images, trained from scratch on diverse datasets.',
+      title: 'Grad-CAM Robustness Study',
+      subtitle: 'Explainable AI under real-world perturbations',
+      description: 'An explainability research project comparing Grad-CAM vs Grad-CAM++ on a ResNet50 melanoma classifier (ISIC dataset), testing how stable their explanations remain under lighting changes and gamma noise.',
       painPoints: [
-        'Hours spent on manual rendering of concept art',
-        'No quick visualization before full production',
-        'Commercial tools too expensive for indie creators',
+        'Medical AI explanations must stay reliable even when image conditions vary slightly',
+        'Most XAI studies assume clean inputs — real clinical images have noise and lighting inconsistency',
+        'No clear comparison existed for Grad-CAM vs Grad-CAM++ robustness on dermatology images',
       ],
-      image: '/project-gan.jpg',
-      tags: ['PyTorch', 'GANs', 'Computer Vision'],
-      color: 'from-pink-500 to-rose-600',
+      image: '/project-gradcam.jpg',
+      tags: ['PyTorch', 'ResNet50', 'XAI', 'ISIC Dataset'],
+      color: 'from-blue-500 to-indigo-600',
       approach: [
-        'Designed custom Pix2Pix-inspired generator with U-Net skip connections',
-        'PatchGAN discriminator for local texture quality assessment',
-        'Progressive training strategy: 64×64 → 128×128 → 256×256 resolution',
-        'Augmentation pipeline with elastic deformations for sketch diversity',
+        'Trained ResNet50 for binary classification: Melanoma vs Nevus (NV) on the ISIC dataset',
+        'Implemented Grad-CAM and Grad-CAM++ explainability methods',
+        'Applied slight lighting perturbations and 3 levels of gamma noise to test images',
+        'Compared heatmap stability across both methods under each perturbation',
       ],
       results: [
-        'FID score of 34.7 on held-out test set (lower is better)',
-        'Generates photorealistic 256×256 images from rough sketches in < 2s',
-        'Trained on 15k sketch-photo pairs across multiple domains',
+        'Grad-CAM++ produced more stable explanations than Grad-CAM under perturbations',
+        'Documented robustness differences across 3 gamma noise levels',
+        'Built a reusable comparison pipeline for future XAI robustness studies',
       ],
       keyFeatures: [
-        'Sketch-to-photo translation',
-        'Multi-domain support (faces, landscapes, objects)',
-        'Progressive resolution training',
-        'Real-time inference pipeline',
+        'Melanoma vs Nevus binary classifier',
+        'Grad-CAM vs Grad-CAM++ comparison',
+        'Perturbation robustness testing',
+        'Medical imaging explainability',
       ],
     },
     {
       id: 3,
-      title: 'GradCAM Analysis',
-      subtitle: 'Making AI explainable',
-      description: 'Comparative research on CNN interpretability techniques, visualizing model attention to build trust in AI decisions.',
+      title: 'Nepal AI Travel Recommender',
+      subtitle: 'ML-driven travel assistant with Phi-2 chatbot',
+      description: 'A solo project building an ML-powered travel recommendation system for Nepal that suggests destinations based on budget, season, and location, paired with a Phi-2 chatbot grounded on custom Nepal travel datasets.',
       painPoints: [
-        'Deep learning as opaque black boxes',
-        'Stakeholders hesitant to trust AI without explanations',
-        'Regulatory requirements for model transparency',
+        'Travel planning in Nepal is messy — prices, seasonality, and location constraints all matter',
+        'Generic travel sites lack local, data-driven recommendations for Nepal',
+        'No conversational AI tool existed for Nepal-specific travel guidance',
       ],
-      image: '/project-gradcam.jpg',
-      tags: ['PyTorch', 'CNNs', 'XAI', 'Research'],
-      color: 'from-blue-500 to-indigo-600',
+      image: '/project-elearning.jpg',
+      tags: ['Python', 'Django', 'Phi-2', 'ML Pipeline'],
+      color: 'from-emerald-500 to-teal-600',
       approach: [
-        'Implemented GradCAM, GradCAM++, and ScoreCAM from scratch in PyTorch',
-        'Comparative analysis across ResNet-50, VGG-16, and EfficientNet architectures',
-        'Quantitative evaluation using insertion/deletion metrics',
-        'Visualized attention maps across medical imaging and natural image datasets',
+        'Built custom Nepal travel datasets covering budget ranges, seasons, and locations',
+        'Designed ML recommendation pipeline that ranks destinations based on user inputs',
+        'Integrated Phi-2 chatbot fine-tuned/grounded on the custom travel data',
+        'Django backend serving recommendations and chatbot responses',
       ],
       results: [
-        'Published comparative analysis of 3 XAI techniques across 3 architectures',
-        'Identified GradCAM++ as most consistent for fine-grained localization',
-        'Created reusable XAI toolkit for future research projects',
+        'Recommendations account for budget, season, and location simultaneously',
+        'Phi-2 chatbot answers Nepal-specific travel questions grounded in real data',
+        'End-to-end pipeline from user input to ranked destination list',
       ],
       keyFeatures: [
-        'Multi-method comparison framework',
-        'Architecture-agnostic implementation',
-        'Quantitative + qualitative evaluation',
-        'Medical imaging application',
+        'Budget + season + location filtering',
+        'Custom Nepal travel datasets',
+        'Phi-2 chatbot integration',
+        'Django backend API',
       ],
     },
     {
       id: 4,
-      title: 'E-Commerce Platform',
-      subtitle: 'Scalable online marketplace',
-      description: 'Complete e-commerce backend with real-time inventory, secure payments, and comprehensive order management.',
+      title: 'Secure RBAC System',
+      subtitle: 'JWT auth, role-based access, and audit logging',
+      description: 'A solo IAM-focused Django project implementing secure JWT authentication, a role-based access control system with a permission matrix (Admin/Manager/User), and comprehensive audit logging for security traceability.',
       painPoints: [
-        'Manual order processing prone to errors',
-        'Inventory sync issues causing overselling',
-        'Complex payment integration challenges',
+        'Most beginner projects skip access control entirely — no auth beyond login',
+        'No clear separation between authentication (who you are) and authorization (what you can do)',
+        'Security-relevant actions go untracked with no audit trail for review',
       ],
       image: '/project-ecommerce.jpg',
-      tags: ['Django', 'REST APIs', 'Stripe', 'Redis'],
-      color: 'from-emerald-500 to-teal-600',
-      approach: [
-        'Designed modular Django backend with clean service-layer architecture',
-        'Stripe integration with webhook handling for payment lifecycle',
-        'Redis-backed caching for product catalog and session management',
-        'Celery task queue for async order processing and email notifications',
-      ],
-      results: [
-        'Zero overselling incidents with atomic inventory transactions',
-        'Payment processing success rate of 99.2%',
-        '3x faster page loads with Redis caching layer',
-      ],
-      keyFeatures: [
-        'Secure payment processing',
-        'Real-time inventory management',
-        'Order lifecycle automation',
-        'Admin dashboard with analytics',
-      ],
-    },
-  ];
-
-  const passionProjects: Project[] = [
-    {
-      id: 5,
-      title: 'NID Verification Portal',
-      subtitle: 'Secure e-governance identity',
-      description: 'Secure e-governance identity verification with multi-factor authentication and audit trails.',
-      painPoints: [
-        'Manual identity verification slow and error-prone',
-        'No centralized audit trail for verification attempts',
-        'Security vulnerabilities in existing paper-based systems',
-      ],
-      image: '/project-nid.jpg',
-      tags: ['Django', 'Security', 'Government'],
+      tags: ['Django', 'DRF', 'JWT', 'IAM'],
       color: 'from-amber-500 to-orange-600',
       approach: [
-        'Multi-factor authentication with document + biometric verification',
-        'Django backend with role-based access control for government officials',
-        'Comprehensive audit logging for every verification attempt',
-        'Encrypted data storage compliant with data protection standards',
+        'Implemented JWT-based authentication with Django REST Framework',
+        'Designed role hierarchy: Admin → Manager → User with a central permission matrix',
+        'Built middleware-based permission enforcement on all protected endpoints',
+        'Added database audit logging for login events, access attempts, and role changes',
       ],
       results: [
-        'Reduced verification time from 30 minutes to under 2 minutes',
-        'Complete audit trail for regulatory compliance',
-        '99.5% uptime with proper error handling and failover',
+        'Clean separation of authentication vs authorization layers',
+        'Central permission matrix makes role management maintainable',
+        'Full audit trail for security review and traceability',
       ],
       keyFeatures: [
-        'Multi-factor identity verification',
-        'Role-based access control',
-        'Complete audit logging',
-        'Encrypted data at rest and in transit',
-      ],
-    },
-    {
-      id: 6,
-      title: 'Essay Evaluation AI',
-      subtitle: 'NLP-powered scoring',
-      description: 'NLP-powered automated essay scoring using fine-tuned transformer models.',
-      painPoints: [
-        'Manual essay grading inconsistent across evaluators',
-        'Weeks-long turnaround for large batches of essays',
-        'Lack of detailed feedback for students',
-      ],
-      image: '/project-debert.jpg',
-      tags: ['PyTorch', 'NLP', 'BERT'],
-      color: 'from-cyan-500 to-blue-600',
-      approach: [
-        'Fine-tuned DeBERTa model on essay scoring datasets',
-        'Multi-criteria scoring: coherence, grammar, argumentation, evidence',
-        'Attention visualization to show which parts influenced the score',
-        'RESTful API for integration with learning management systems',
-      ],
-      results: [
-        '0.87 QWK score (Quadratic Weighted Kappa) on test set',
-        'Scores align with human evaluators 91% of the time',
-        'Processes 100 essays in under 60 seconds',
-      ],
-      keyFeatures: [
-        'Multi-criteria automated scoring',
-        'Attention-based explanations',
-        'Batch processing capability',
-        'LMS integration ready',
+        'JWT authentication flow',
+        'Role-based permission matrix',
+        'Middleware permission enforcement',
+        'Audit logging for security events',
       ],
     },
   ];
@@ -524,60 +458,6 @@ const Home = () => {
                     </span>
                     <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Passion Projects */}
-      <section
-        ref={passionRef}
-        className={`py-24 px-6 bg-gray-50 transition-all duration-1000 ${passionVisible ? 'opacity-100' : 'opacity-0'}`}
-      >
-        <div className="max-w-6xl mx-auto">
-          <div className={`mb-12 transition-all duration-700 ${passionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="text-sm font-medium text-indigo-500 uppercase tracking-widest mb-2 block">
-              Side Projects
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-4">
-              Passion Projects
-            </h2>
-            <p className="text-gray-600 max-w-2xl">
-              Outside my core work, I explore ideas that push me to learn new technologies,
-              prototype faster, and build with more clarity.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {passionProjects.map((project, index) => (
-              <div
-                key={project.title}
-                className={`group cursor-pointer transition-all duration-700 ${passionVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                  }`}
-                style={{ transitionDelay: `${200 + index * 100}ms` }}
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="relative overflow-hidden rounded-3xl mb-6">
-                  <div className="aspect-video overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                </div>
-
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-500">{project.description}</p>
-                  </div>
-                  <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
                 </div>
               </div>
             ))}
