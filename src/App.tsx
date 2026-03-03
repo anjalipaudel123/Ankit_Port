@@ -1,15 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Moon, Sun, Briefcase, User, Zap, Terminal as TerminalIcon, Camera } from 'lucide-react';
+import { Moon, Sun, Briefcase, User, Zap, Terminal as TerminalIcon, Camera, Award } from 'lucide-react';
 import Home from './sections/Home';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Gallery from './sections/Gallery';
+import Certificates from './sections/Certificates';
 import Terminal from './components/Terminal';
 import CustomCursor from './components/CustomCursor';
 import LoadingScreen from './components/LoadingScreen';
 import { useTheme } from './hooks/useTheme';
 
-type Page = 'home' | 'about' | 'skills' | 'gallery';
+type Page = 'home' | 'about' | 'skills' | 'gallery' | 'certs';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('home');
@@ -132,6 +133,15 @@ function App() {
               >
                 Gallery
               </button>
+              <button
+                onClick={() => handlePageChange('certs')}
+                className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'certs'
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                Certs
+              </button>
             </div>
 
             {/* Dark Mode Toggle */}
@@ -251,6 +261,25 @@ function App() {
               )}
             </button>
 
+            {/* Certs Tab */}
+            <button
+              onClick={() => handlePageChange('certs')}
+              className="mobile-tab group relative flex flex-col items-center justify-center flex-1 h-full"
+            >
+              <div className={`relative transition-all duration-300 ${currentPage === 'certs' ? 'scale-110' : 'scale-100'}`}>
+                <Award className={`w-5 h-5 transition-colors duration-300 ${currentPage === 'certs' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                {currentPage === 'certs' && (
+                  <div className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-indigo-500 rounded-full animate-pulse" />
+                )}
+              </div>
+              <span className={`text-[10px] mt-1 font-medium transition-colors duration-300 ${currentPage === 'certs' ? 'text-indigo-600' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                Certs
+              </span>
+              {currentPage === 'certs' && (
+                <div className="absolute -bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full" />
+              )}
+            </button>
+
             {/* Terminal Tab */}
             <button
               onClick={() => setTerminalOpen(true)}
@@ -278,6 +307,7 @@ function App() {
             {currentPage === 'about' && <About />}
             {currentPage === 'skills' && <Skills />}
             {currentPage === 'gallery' && <Gallery />}
+            {currentPage === 'certs' && <Certificates />}
           </div>
         </main>
       </div>
