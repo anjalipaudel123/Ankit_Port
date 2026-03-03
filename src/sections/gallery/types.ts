@@ -1,4 +1,4 @@
-export type PhotoCategory = 'all' | 'nature' | 'urban' | 'portrait' | 'architecture';
+export type PhotoCategory = 'all' | 'nature' | 'travel' | 'portrait' | 'moody';
 
 export interface Photo {
     id: number;
