@@ -37,7 +37,7 @@ export function GalleryGrid({ photos, activeCategory }: GalleryGridProps) {
 
                 {filteredPhotos.length === 0 && (
                     <div className="text-center py-20 gallery-fade-in">
-                        <p className="text-white/40 text-lg">No photos found in this category</p>
+                        <p className="text-gray-400 dark:text-white/40 text-lg">No photos found in this category</p>
                     </div>
                 )}
             </div>

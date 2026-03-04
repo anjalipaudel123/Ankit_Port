@@ -11,7 +11,7 @@ export default function Gallery() {
         activeCategory === 'all' ? photos.length : photos.filter((p) => p.category === activeCategory).length;
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+        <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden">
             {/* Film grain overlay */}
             <div className="gallery-film-grain" />
             <main>

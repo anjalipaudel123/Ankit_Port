@@ -321,7 +321,7 @@ const Skills = () => {
   ];
 
   return (
-    <div className="bg-[#05050a] min-h-screen" ref={sectionRef}>
+    <div className="bg-gray-50 dark:bg-[#05050a] min-h-screen" ref={sectionRef}>
       <section id="skills" className="relative py-24 lg:py-32 overflow-hidden">
         {/* Particle Canvas Background */}
         <ParticleField />
@@ -340,14 +340,14 @@ const Skills = () => {
             className={`text-center mb-20 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
-              <span className="text-xs font-medium text-purple-300/80 uppercase tracking-[0.2em]">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] backdrop-blur-sm mb-6">
+              <div className="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-purple-400 animate-pulse" />
+              <span className="text-xs font-medium text-purple-600 dark:text-purple-300/80 uppercase tracking-[0.2em]">
                 Expertise
               </span>
             </div>
 
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-white mb-4">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-gray-900 dark:text-white mb-4">
               Technical{' '}
               <span className="relative inline-block">
                 <span className="text-gradient">Arsenal</span>
@@ -375,7 +375,7 @@ const Skills = () => {
               </span>
             </h2>
 
-            <p className="text-gray-500 text-lg max-w-xl mx-auto mt-6">
+            <p className="text-gray-600 dark:text-gray-500 text-lg max-w-xl mx-auto mt-6">
               Building at the intersection of machine intelligence, backend systems, and security infrastructure
             </p>
           </div>
@@ -395,8 +395,8 @@ const Skills = () => {
                 >
                   <div
                     className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${isActive
-                        ? 'ring-1 ring-white/20 shadow-2xl'
-                        : 'ring-1 ring-white/[0.06] hover:ring-white/[0.12]'
+                      ? 'ring-1 ring-white/20 shadow-2xl'
+                      : 'ring-1 ring-white/[0.06] hover:ring-white/[0.12]'
                       }`}
                     style={{
                       boxShadow: isActive ? `0 0 60px ${category.glowColor}, 0 0 120px ${category.glowColor}` : 'none',
@@ -406,7 +406,7 @@ const Skills = () => {
                     <div className={`h-[2px] w-full bg-gradient-to-r ${category.gradient} transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'}`} />
 
                     {/* Card body */}
-                    <div className="relative p-6 lg:p-8 bg-[#0a0a14]/80 backdrop-blur-xl">
+                    <div className="relative p-6 lg:p-8 bg-white dark:bg-[#0a0a14]/80 backdrop-blur-xl">
                       <div
                         className="absolute inset-0 transition-opacity duration-500"
                         style={{
@@ -420,22 +420,22 @@ const Skills = () => {
                         <div className="flex items-start justify-between mb-8">
                           <div className="flex items-center gap-4">
                             <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${category.gradient} p-[1px]`}>
-                              <div className="w-full h-full rounded-2xl bg-[#0a0a14] flex items-center justify-center">
+                              <div className="w-full h-full rounded-2xl bg-white dark:bg-[#0a0a14] flex items-center justify-center">
                                 <span style={{ color: category.accentColor }}>
                                   <category.icon className="w-7 h-7" />
                                 </span>
                               </div>
                             </div>
                             <div>
-                              <h3 className="text-lg font-semibold text-white leading-tight">
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight">
                                 {category.title}
                               </h3>
-                              <p className="text-sm text-gray-500 mt-0.5">{category.subtitle}</p>
+                              <p className="text-sm text-gray-500 dark:text-gray-500 mt-0.5">{category.subtitle}</p>
                             </div>
                           </div>
 
-                          <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 ${isActive ? 'rotate-45 border-white/30' : 'group-hover:border-white/20'}`}>
-                            <svg className="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <div className={`w-8 h-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center transition-all duration-500 ${isActive ? 'rotate-45 border-gray-400 dark:border-white/30' : 'group-hover:border-gray-300 dark:group-hover:border-white/20'}`}>
+                            <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                               <path d="M12 5v14M5 12h14" />
                             </svg>
                           </div>
@@ -454,11 +454,11 @@ const Skills = () => {
                                 onMouseEnter={() => setHoveredSkill(skill.name)}
                                 onMouseLeave={() => setHoveredSkill(null)}
                               >
-                                <div className={`relative flex items-center gap-4 p-3 rounded-xl transition-all duration-300 ${isSkillHovered ? 'bg-white/[0.04]' : ''
+                                <div className={`relative flex items-center gap-4 p-3 rounded-xl transition-all duration-300 ${isSkillHovered ? 'bg-gray-100 dark:bg-white/[0.04]' : ''
                                   }`}>
                                   <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isSkillHovered
-                                      ? 'bg-white/[0.08] scale-110'
-                                      : 'bg-white/[0.03]'
+                                    ? 'bg-gray-200 dark:bg-white/[0.08] scale-110'
+                                    : 'bg-gray-100 dark:bg-white/[0.03]'
                                     }`}>
                                     <span style={{ color: isSkillHovered ? category.accentColor : 'rgba(255,255,255,0.4)' }} className="transition-colors duration-300">
                                       <skill.icon className="w-5 h-5" />
@@ -472,7 +472,7 @@ const Skills = () => {
 
                                   <div className="flex-1 min-w-0">
                                     <div className="flex items-center justify-between mb-1.5">
-                                      <span className={`text-sm font-medium transition-colors duration-300 ${isSkillHovered ? 'text-white' : 'text-gray-400'
+                                      <span className={`text-sm font-medium transition-colors duration-300 ${isSkillHovered ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
                                         }`}>
                                         {skill.name}
                                       </span>
@@ -486,7 +486,7 @@ const Skills = () => {
                                       </span>
                                     </div>
 
-                                    <div className="h-[3px] w-full rounded-full bg-white/[0.04] overflow-hidden">
+                                    <div className="h-[3px] w-full rounded-full bg-gray-200 dark:bg-white/[0.04] overflow-hidden">
                                       <div
                                         className="h-full rounded-full transition-all duration-700 ease-out"
                                         style={{
@@ -505,8 +505,8 @@ const Skills = () => {
                         </div>
 
                         {/* Category average */}
-                        <div className={`mt-6 pt-5 border-t border-white/[0.04] flex items-center justify-between transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                          <span className="text-xs text-gray-600 uppercase tracking-wider">Average proficiency</span>
+                        <div className={`mt-6 pt-5 border-t border-gray-200 dark:border-white/[0.04] flex items-center justify-between transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                          <span className="text-xs text-gray-500 dark:text-gray-600 uppercase tracking-wider">Average proficiency</span>
                           <span className="text-sm font-mono" style={{ color: category.accentColor }}>
                             {Math.round(category.skills.reduce((a, s) => a + s.level, 0) / category.skills.length)}%
                           </span>
@@ -526,7 +526,7 @@ const Skills = () => {
               }`}
           >
             <div className="text-center mb-8">
-              <h3 className="text-sm font-medium text-gray-500 uppercase tracking-[0.15em]">
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-500 uppercase tracking-[0.15em]">
                 Also in the toolkit
               </h3>
             </div>
@@ -535,30 +535,14 @@ const Skills = () => {
               {additionalSkills.map((tag, index) => (
                 <span
                   key={tag.name}
-                  className={`group/tag inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm cursor-default transition-all duration-500 ${tagsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
+                  className={`group/tag inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm cursor-default transition-all duration-500 bg-gray-100 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:bg-purple-100 dark:hover:bg-purple-500/10 hover:border-purple-300 dark:hover:border-purple-400/20 hover:-translate-y-0.5 hover:shadow-md hover:shadow-purple-500/10 ${tagsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
                     }`}
                   style={{
                     transitionDelay: `${600 + index * 50}ms`,
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget;
-                    el.style.background = 'rgba(167, 139, 250, 0.08)';
-                    el.style.borderColor = 'rgba(167, 139, 250, 0.2)';
-                    el.style.transform = 'translateY(-2px)';
-                    el.style.boxShadow = '0 4px 20px rgba(167, 139, 250, 0.1)';
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget;
-                    el.style.background = 'rgba(255,255,255,0.02)';
-                    el.style.borderColor = 'rgba(255,255,255,0.06)';
-                    el.style.transform = 'translateY(0)';
-                    el.style.boxShadow = 'none';
                   }}
                 >
-                  <tag.icon className="w-3.5 h-3.5 text-gray-500 group-hover/tag:text-purple-400 transition-colors duration-300" />
-                  <span className="text-gray-500 group-hover/tag:text-gray-300 transition-colors duration-300">{tag.name}</span>
+                  <tag.icon className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover/tag:text-purple-500 dark:group-hover/tag:text-purple-400 transition-colors duration-300" />
+                  <span className="text-gray-600 dark:text-gray-500 group-hover/tag:text-gray-800 dark:group-hover/tag:text-gray-300 transition-colors duration-300">{tag.name}</span>
                 </span>
               ))}
             </div>

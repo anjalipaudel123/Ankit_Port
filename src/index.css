@@ -349,6 +349,17 @@
   animation: marquee-reverse 45s linear infinite;
 }
 
+/* Faster marquee on mobile */
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation: marquee 18s linear infinite;
+  }
+
+  .animate-marquee-reverse {
+    animation: marquee-reverse 20s linear infinite;
+  }
+}
+
 .animate-marquee:hover,
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
@@ -873,19 +884,29 @@
 .gallery-filter-btn {
   padding: 0.625rem 1.5rem;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.15);
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.3s ease;
   background: transparent;
-  color: white;
+  color: #374151;
   cursor: pointer;
 }
 
+:is(.dark) .gallery-filter-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
 .gallery-filter-btn:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px) scale(1.02);
+}
+
+:is(.dark) .gallery-filter-btn:hover {
   border-color: rgba(255, 255, 255, 0.5);
   background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px) scale(1.02);
 }
 
 .gallery-filter-btn.active {

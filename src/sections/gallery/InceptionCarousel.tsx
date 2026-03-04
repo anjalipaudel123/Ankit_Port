@@ -84,11 +84,11 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
         >
             {/* Section title */}
             <div className="text-center mb-16 relative z-10">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/30 mb-3 font-mono">
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-400 dark:text-white/30 mb-3 font-mono">
                     Infinite Depth
                 </p>
                 <h2
-                    className="text-3xl md:text-4xl font-bold text-white"
+                    className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                     The <span className="text-[#ff0000]">Inception</span> Reel
@@ -144,7 +144,7 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
                                 {/* Photo frame with subtle border glow */}
                                 <div
                                     className={`relative w-full h-full rounded-xl overflow-hidden shadow-2xl
-                                        ${isTop ? 'cursor-pointer ring-1 ring-white/10' : 'ring-1 ring-white/5'}
+                                        ${isTop ? 'cursor-pointer ring-1 ring-gray-200 dark:ring-white/10' : 'ring-1 ring-gray-200 dark:ring-white/5'}
                                     `}
                                     onClick={() => isTop && !isTransitioning && onPhotoClick(photoIndex)}
                                     style={{
@@ -234,8 +234,8 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
                 <button
                     onClick={() => navigate('prev')}
                     disabled={isTransitioning}
-                    className="group w-12 h-12 rounded-full border border-white/10 flex items-center justify-center
-                               text-white/50 hover:text-white hover:border-white/30 hover:bg-white/5
+                    className="group w-12 h-12 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center
+                               text-gray-400 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-white/30 hover:bg-gray-100 dark:hover:bg-white/5
                                transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed
                                hover:scale-110 active:scale-90"
                 >
@@ -254,7 +254,7 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
                             }}
                             className={`rounded-full transition-all duration-500 ${idx === activeIndex
                                 ? 'w-8 h-2 bg-[#ff0000]'
-                                : 'w-2 h-2 bg-white/20 hover:bg-white/40'
+                                : 'w-2 h-2 bg-gray-300 dark:bg-white/20 hover:bg-gray-400 dark:hover:bg-white/40'
                                 }`}
                         />
                     ))}
@@ -263,8 +263,8 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
                 <button
                     onClick={() => navigate('next')}
                     disabled={isTransitioning}
-                    className="group w-12 h-12 rounded-full border border-white/10 flex items-center justify-center
-                               text-white/50 hover:text-white hover:border-white/30 hover:bg-white/5
+                    className="group w-12 h-12 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center
+                               text-gray-400 dark:text-white/50 hover:text-gray-900 dark:hover:text-white hover:border-gray-400 dark:hover:border-white/30 hover:bg-gray-100 dark:hover:bg-white/5
                                transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed
                                hover:scale-110 active:scale-90"
                 >
@@ -274,7 +274,7 @@ export function InceptionCarousel({ photos, onPhotoClick }: InceptionCarouselPro
 
             {/* Depth indicator text */}
             <div className="text-center mt-6">
-                <p className="text-white/20 text-xs font-mono tracking-widest uppercase">
+                <p className="text-gray-400 dark:text-white/20 text-xs font-mono tracking-widest uppercase">
                     Layer {activeIndex + 1} / {total}
                 </p>
             </div>

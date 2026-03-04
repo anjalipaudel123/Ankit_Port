@@ -46,7 +46,7 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
             onClick={onClick}
         >
             <div
-                className={`gallery-card-3d relative overflow-hidden rounded-lg cursor-pointer bg-[#141414] ${aspectRatioClass}`}
+                className={`gallery-card-3d relative overflow-hidden rounded-lg cursor-pointer bg-gray-200 dark:bg-[#141414] ${aspectRatioClass}`}
                 style={{
                     transformStyle: 'preserve-3d',
                     transform: `

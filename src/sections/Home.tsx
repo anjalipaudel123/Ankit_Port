@@ -231,7 +231,7 @@ const Home = () => {
   ];
 
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-[#0a0a0a]">
       {/* Hero Section */}
       <section
         ref={heroRef}
@@ -251,9 +251,9 @@ const Home = () => {
 
           {/* Grid pattern */}
           <div
-            className="absolute inset-0 opacity-[0.02]"
+            className="absolute inset-0 opacity-[0.02] dark:opacity-[0.02]"
             style={{
-              backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`,
+              backgroundImage: `linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)`,
               backgroundSize: '60px 60px',
             }}
           />
@@ -261,7 +261,7 @@ const Home = () => {
 
         {/* Tagline with character animation */}
         <div className="relative z-10 max-w-4xl mx-auto text-center mb-12">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gray-900 leading-[1.2] tracking-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gray-900 dark:text-white leading-[1.2] tracking-tight">
             <span className="block mb-2">
               <span className="inline-block animate-slide-up" style={{ animationDelay: '0.1s' }}>
                 Securing infrastructure,
@@ -300,9 +300,9 @@ const Home = () => {
 
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <span className="text-xs text-gray-400 tracking-widest uppercase">Scroll</span>
-          <div className="w-5 h-8 border-2 border-gray-300 rounded-full flex justify-center pt-1">
-            <div className="w-1 h-2 bg-gray-400 rounded-full animate-bounce" />
+          <span className="text-xs text-gray-400 dark:text-gray-500 tracking-widest uppercase">Scroll</span>
+          <div className="w-5 h-8 border-2 border-gray-300 dark:border-gray-600 rounded-full flex justify-center pt-1">
+            <div className="w-1 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" />
           </div>
         </div>
       </section>
@@ -314,19 +314,19 @@ const Home = () => {
       >
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-4 mb-8">
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-            <span className="text-sm font-medium text-gray-400 uppercase tracking-widest">About my work</span>
-            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
+            <span className="text-sm font-medium text-gray-400 dark:text-gray-500 uppercase tracking-widest">About my work</span>
+            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent" />
           </div>
 
-          <p className="text-xl md:text-2xl text-gray-700 leading-relaxed text-center">
-            Currently working as an <span className="font-semibold text-gray-900">IAM Intern at Paramount Computer Systems</span>, a regional cybersecurity leader in the Middle East. I also build intelligent systems as a <span className="font-semibold text-gray-900">Machine Learning Engineer</span> and <span className="font-semibold text-gray-900">Backend Developer</span>. Off-screen, I'm behind a camera or color grading in <span className="font-semibold text-gray-900">DaVinci Resolve</span>.
+          <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 leading-relaxed text-center">
+            Currently working as an <span className="font-semibold text-gray-900 dark:text-white">IAM Intern at Paramount Computer Systems</span>, a regional cybersecurity leader in the Middle East. I also build intelligent systems as a <span className="font-semibold text-gray-900 dark:text-white">Machine Learning Engineer</span> and <span className="font-semibold text-gray-900 dark:text-white">Backend Developer</span>. Off-screen, I'm behind a camera or color grading in <span className="font-semibold text-gray-900 dark:text-white">DaVinci Resolve</span>.
           </p>
         </div>
       </section>
 
       {/* Tech Stack Marquee */}
-      <section className="py-12 overflow-hidden border-y border-gray-100 bg-gray-50/50">
+      <section className="py-12 overflow-hidden border-y border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-white/[0.02]">
         <div className="flex animate-marquee whitespace-nowrap">
           {[...Array(2)].map((_, setIndex) => (
             <div key={setIndex} className="flex items-center gap-12 px-6 shrink-0">
@@ -349,10 +349,10 @@ const Home = () => {
               ].map((tech) => (
                 <div key={`${setIndex}-${tech.name}`} className="flex items-center gap-3 group cursor-default">
                   <tech.icon className="w-6 h-6 opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
-                  <span className="text-lg font-medium text-gray-400 group-hover:text-gray-900 transition-colors duration-300 tracking-wide">
+                  <span className="text-lg font-medium text-gray-400 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-white transition-colors duration-300 tracking-wide">
                     {tech.name}
                   </span>
-                  <span className="text-gray-200 text-2xl font-thin ml-6">·</span>
+                  <span className="text-gray-200 dark:text-gray-700 text-2xl font-thin ml-6">·</span>
                 </div>
               ))}
             </div>
@@ -372,11 +372,11 @@ const Home = () => {
               <span className="text-sm font-medium text-indigo-500 uppercase tracking-widest mb-2 block">
                 Selected Works
               </span>
-              <h2 className="text-4xl md:text-5xl font-serif text-gray-900">
+              <h2 className="text-4xl md:text-5xl font-serif text-gray-900 dark:text-white">
                 Case Studies
               </h2>
             </div>
-            <p className="hidden md:block text-gray-500 max-w-md text-right">
+            <p className="hidden md:block text-gray-500 dark:text-gray-400 max-w-md text-right">
               Each project represents a unique challenge and the solution that strengthened the product.
             </p>
           </div>
@@ -408,10 +408,10 @@ const Home = () => {
                   </div>
 
                   {/* Floating tag */}
-                  <div className="absolute -bottom-4 -right-4 bg-white shadow-lg rounded-xl px-4 py-3">
+                  <div className="absolute -bottom-4 -right-4 bg-white dark:bg-gray-800 shadow-lg rounded-xl px-4 py-3">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${project.color}`} />
-                      <span className="text-sm font-medium text-gray-700">{project.tags[0]}</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{project.tags[0]}</span>
                     </div>
                   </div>
                 </div>
@@ -423,27 +423,27 @@ const Home = () => {
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-default"
+                        className="px-3 py-1 text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-default"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  <h3 className="text-3xl font-serif text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+                  <h3 className="text-3xl font-serif text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-lg text-gray-500 mb-4">{project.subtitle}</p>
-                  <p className="text-gray-600 mb-6 leading-relaxed">{project.description}</p>
+                  <p className="text-lg text-gray-500 dark:text-gray-400 mb-4">{project.subtitle}</p>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">{project.description}</p>
 
                   {/* Pain Points */}
                   <div className="mb-8">
-                    <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-200 uppercase tracking-wider mb-3">
                       Problem Pain Points
                     </h4>
                     <ul className="space-y-2">
                       {project.painPoints.map((point, i) => (
-                        <li key={i} className="flex items-start gap-3 text-gray-600">
+                        <li key={i} className="flex items-start gap-3 text-gray-600 dark:text-gray-400">
                           <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 mt-2 flex-shrink-0" />
                           {point}
                         </li>
@@ -455,7 +455,7 @@ const Home = () => {
                   <div className="flex items-center gap-4 flex-wrap">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="group/btn inline-flex items-center gap-2 text-gray-900 font-medium hover:text-indigo-600 transition-colors"
+                      className="group/btn inline-flex items-center gap-2 text-gray-900 dark:text-white font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                     >
                       <span className="relative">
                         Read case study
@@ -473,8 +473,8 @@ const Home = () => {
                           }
                         }}
                         className={`group/demo inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full transition-all ${showDemo
-                            ? 'bg-gray-900 text-white hover:bg-gray-800'
-                            : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg hover:shadow-cyan-500/25'
+                          ? 'bg-gray-900 text-white hover:bg-gray-800'
+                          : 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:shadow-lg hover:shadow-cyan-500/25'
                           }`}
                       >
                         <Play className={`w-3.5 h-3.5 fill-current transition-transform ${showDemo ? 'rotate-90' : ''}`} />
@@ -549,15 +549,15 @@ const Home = () => {
       >
         <div className="max-w-4xl mx-auto text-center">
           <div className={`transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <span className="inline-block px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium mb-6">
+            <span className="inline-block px-4 py-2 bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium mb-6">
               Open to opportunities
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-gray-900 dark:text-white mb-6">
               Let's build something
               <br />
               <span className="text-gradient">extraordinary</span> together
             </h2>
-            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto">
               I'm currently seeking a team that values innovative solutions, clean code,
               and meaningful impact.
             </p>
@@ -566,14 +566,14 @@ const Home = () => {
               <a
                 href="/ankitt_resume.pdf"
                 download="Ankit_Paudel_Resume.pdf"
-                className="group inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:shadow-lg hover:shadow-gray-900/20"
+                className="group inline-flex items-center gap-2 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-full font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-all hover:shadow-lg hover:shadow-gray-900/20"
               >
                 <Download className="w-5 h-5" />
                 Download Resume
               </a>
               <a
                 href="mailto:ankit.p@paramountassure.com"
-                className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-gray-200 text-gray-900 rounded-full font-medium hover:border-gray-900 transition-colors"
+                className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-full font-medium hover:border-gray-900 dark:hover:border-white transition-colors"
               >
                 Get in touch
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -584,14 +584,14 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-gray-100">
+      <footer className="py-12 px-6 border-t border-gray-100 dark:border-gray-800">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
             <div>
-              <p className="text-sm text-gray-400 mb-1">Want to collaborate?</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 mb-1">Want to collaborate?</p>
               <a
                 href="mailto:ankit.p@paramountassure.com"
-                className="text-2xl font-serif text-gray-900 hover:text-indigo-600 transition-colors"
+                className="text-2xl font-serif text-gray-900 dark:text-white hover:text-indigo-600 transition-colors"
               >
                 ankit.p@paramountassure.com
               </a>
@@ -602,7 +602,7 @@ const Home = () => {
                 href="https://github.com/ankitpaudel07"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-900 hover:text-white transition-all"
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-900 dark:hover:bg-white hover:text-white dark:hover:text-gray-900 transition-all"
               >
                 <Github className="w-5 h-5" />
               </a>
@@ -610,18 +610,18 @@ const Home = () => {
                 href="https://www.linkedin.com/in/ankit-paudel/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all"
+                className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-blue-600 hover:text-white transition-all"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <p className="text-sm text-gray-400">
+          <div className="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-sm text-gray-400 dark:text-gray-500">
               © 2026 Ankit Paudel.
             </p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 dark:text-gray-500">
               Kathmandu, Nepal
             </p>
           </div>

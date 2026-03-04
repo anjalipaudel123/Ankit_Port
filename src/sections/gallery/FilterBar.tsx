@@ -15,8 +15,8 @@ export function FilterBar({ categories, activeCategory, onSelect, photoCount }: 
                 ))}
             </div>
 
-            <p className="text-white/50 text-sm font-light tracking-wide transition-all duration-300">
-                <span className="text-white font-medium">{photoCount}</span>
+            <p className="text-gray-500 dark:text-white/50 text-sm font-light tracking-wide transition-all duration-300">
+                <span className="text-gray-900 dark:text-white font-medium">{photoCount}</span>
                 {' '}photo{photoCount !== 1 ? 's' : ''}
             </p>
         </div>

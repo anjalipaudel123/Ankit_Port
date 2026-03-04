@@ -12,7 +12,7 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
     return (
         <section className="relative min-h-[50vh] flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
             {/* Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-[#0f0f0f] to-[#0a0a0a]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-gray-100 dark:from-[#0a0a0a] dark:via-[#0f0f0f] to-gray-50 dark:to-[#0a0a0a]" />
 
             {/* Floating orbs */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -24,7 +24,7 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
             <div className="relative z-10 text-center max-w-4xl mx-auto">
                 <div className="overflow-hidden mb-4">
                     <h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight gallery-flip-in"
+                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white tracking-tight gallery-flip-in"
                         style={{ fontFamily: "'Playfair Display', serif", animationDelay: '0.2s' }}
                     >
                         Photo
@@ -40,7 +40,7 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
                 </div>
 
                 <p
-                    className="text-lg md:text-xl text-white/60 font-light mb-12 max-w-2xl mx-auto gallery-blur-reveal"
+                    className="text-lg md:text-xl text-gray-500 dark:text-white/60 font-light mb-12 max-w-2xl mx-auto gallery-blur-reveal"
                     style={{ animationDelay: '0.6s' }}
                 >
                     A curated collection of moments frozen in time,{' '}
@@ -56,7 +56,7 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
                 />
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 dark:from-[#0a0a0a] to-transparent pointer-events-none" />
         </section>
     );
 }

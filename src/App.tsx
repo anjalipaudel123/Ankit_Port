@@ -90,7 +90,7 @@ function App() {
       {showLoader && <LoadingScreen onComplete={handleLoadingComplete} />}
 
       {/* ═══ Desktop Top Navigation (hidden on mobile) ═══ */}
-      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-lg shadow-gray-900/5 hidden md:block">
+      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-lg shadow-gray-900/5 dark:shadow-black/20 hidden md:block">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
@@ -99,10 +99,10 @@ function App() {
               className="group relative"
             >
               <div className="flex flex-col">
-                <span className="text-lg font-bold text-gray-900 tracking-tight group-hover:text-indigo-600 transition-colors duration-300">
+                <span className="text-lg font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-indigo-600 transition-colors duration-300">
                   Ankit Paudel
                 </span>
-                <span className="text-xs text-gray-500 font-medium tracking-wide">
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium tracking-wide">
                   IAM Intern | ML Engineer | Backend Dev
                 </span>
               </div>
@@ -110,12 +110,12 @@ function App() {
             </button>
 
             {/* Navigation Tabs */}
-            <div className="flex items-center gap-1 p-1 bg-gray-100/80 backdrop-blur-sm rounded-full">
+            <div className="flex items-center gap-1 p-1 bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full">
               <button
                 onClick={() => handlePageChange('home')}
                 className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'home'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white dark:bg-white/15 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
               >
                 Work
@@ -123,8 +123,8 @@ function App() {
               <button
                 onClick={() => handlePageChange('about')}
                 className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'about'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white dark:bg-white/15 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
               >
                 About
@@ -132,8 +132,8 @@ function App() {
               <button
                 onClick={() => handlePageChange('skills')}
                 className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'skills'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white dark:bg-white/15 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
               >
                 Skills
@@ -141,8 +141,8 @@ function App() {
               <button
                 onClick={() => handlePageChange('gallery')}
                 className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'gallery'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white dark:bg-white/15 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
               >
                 Gallery
@@ -150,8 +150,8 @@ function App() {
               <button
                 onClick={() => handlePageChange('certs')}
                 className={`relative px-5 py-2.5 text-sm font-medium rounded-full transition-all duration-500 ${currentPage === 'certs'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white dark:bg-white/15 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
                   }`}
               >
                 Certs
@@ -161,7 +161,7 @@ function App() {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleTheme}
-              className="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all duration-300 group"
+              className="relative w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/20 transition-all duration-300 group"
               aria-label="Toggle dark mode"
               title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             >
@@ -173,19 +173,19 @@ function App() {
       </nav>
 
       {/* ═══ Mobile Top Bar (visible only on mobile) ═══ */}
-      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 backdrop-blur-xl shadow-sm md:hidden">
+      <nav className="fixed top-0 left-0 right-0 z-[9999] bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl shadow-sm md:hidden">
         <div className="flex items-center justify-between h-14 px-4">
           <button
             onClick={() => handlePageChange('home')}
             className="group"
           >
-            <span className="text-base font-bold text-gray-900 tracking-tight">
+            <span className="text-base font-bold text-gray-900 dark:text-white tracking-tight">
               Ankit Paudel
             </span>
           </button>
           <button
             onClick={toggleTheme}
-            className="relative w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 text-gray-600"
+            className="relative w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300"
             aria-label="Toggle dark mode"
           >
             <Sun className={`w-4 h-4 absolute transition-all duration-500 ${theme === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`} />
@@ -197,7 +197,7 @@ function App() {
       {/* ═══ Mobile Bottom Tab Bar ═══ */}
       <div className="fixed bottom-0 left-0 right-0 z-[9999] md:hidden">
         {/* Glass backdrop */}
-        <div className="bg-white/90 backdrop-blur-xl border-t border-gray-200/60 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
+        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border-t border-gray-200/60 dark:border-gray-700/60 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-around h-16 px-2 max-w-md mx-auto">
             {/* Work Tab */}
             <button
@@ -307,10 +307,10 @@ function App() {
           </div>
         </div>
         {/* Safe area padding for notched phones */}
-        <div className="bg-white/90 backdrop-blur-xl h-[env(safe-area-inset-bottom)]" />
+        <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl h-[env(safe-area-inset-bottom)]" />
       </div>
 
-      <div className={`min-h-screen bg-white transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`min-h-screen bg-white dark:bg-[#0a0a0a] transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {/* Page Content — pt-14 on mobile (slim top bar), pt-20 on desktop, pb-20 on mobile (bottom tab bar) */}
         <main className="pt-14 md:pt-20 pb-20 md:pb-0">
           <div
@@ -332,7 +332,7 @@ function App() {
       {/* Terminal Hint - bottom right (desktop only — mobile has it in tab bar) */}
       <button
         onClick={() => setTerminalOpen(true)}
-        className="hidden md:flex fixed bottom-6 right-6 z-[9998] group items-center gap-2 px-3 py-2 bg-gray-900 text-gray-400 rounded-full text-xs font-mono hover:bg-gray-800 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl opacity-60 hover:opacity-100"
+        className="hidden md:flex fixed bottom-6 right-6 z-[9998] group items-center gap-2 px-3 py-2 bg-gray-900 dark:bg-gray-800 text-gray-400 rounded-full text-xs font-mono hover:bg-gray-800 dark:hover:bg-gray-700 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl opacity-60 hover:opacity-100"
         title="Open terminal"
       >
         <span className="text-emerald-400">$</span>
