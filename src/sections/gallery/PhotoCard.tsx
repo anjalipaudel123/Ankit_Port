@@ -56,7 +56,7 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
             scale(${isHovered ? 1.03 : 1})
           `,
                     boxShadow: isHovered
-                        ? '0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,0,0,0.15)'
+                        ? '0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(225,6,0,0.18)'
                         : '0 10px 30px rgba(0,0,0,0.3)',
                     transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s ease',
                 }}
@@ -78,17 +78,33 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
                     style={{ opacity: isHovered ? 1 : 0 }}
                 />
 
-                {/* Category Badge */}
+                {/* F1 Driver-style position number — always visible */}
+                <div className="absolute top-3 right-3 z-10">
+                    <span
+                        className="text-white/25 font-black font-mono leading-none transition-all duration-300"
+                        style={{
+                            fontSize: '2.5rem',
+                            opacity: isHovered ? 0 : 1,
+                            lineHeight: 1,
+                        }}
+                    >
+                        {String(index + 1).padStart(2, '0')}
+                    </span>
+                </div>
+
+                {/* Category Badge — sharp, F1-style */}
                 <div
-                    className="absolute top-4 left-4 transition-all duration-300"
+                    className="absolute top-3 left-3 transition-all duration-300"
                     style={{
-                        opacity: isHovered ? 1 : 0,
-                        transform: isHovered ? 'scale(1)' : 'scale(0)',
-                        transitionDelay: isHovered ? '0.1s' : '0s',
-                        transitionTimingFunction: 'cubic-bezier(0.68,-0.55,0.265,1.55)',
+                        opacity: isHovered ? 1 : 0.7,
+                        transform: isHovered ? 'translateY(0)' : 'translateY(-4px)',
+                        transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
                     }}
                 >
-                    <span className="px-3 py-1 text-xs font-medium uppercase tracking-wider bg-[#ff0000] text-white rounded-full">
+                    <span
+                        className="px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.25em] bg-[#e10600] text-white"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
                         {photo.category}
                     </span>
                 </div>
@@ -102,13 +118,20 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
                         transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
                     }}
                 >
+                    {/* F1 position line */}
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[#e10600] font-black font-mono text-xs tracking-widest">
+                            P{String(index + 1).padStart(2, '0')}
+                        </span>
+                        <div className="flex-1 h-px bg-white/20" />
+                    </div>
                     <h3 className="text-xl font-semibold text-white mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                         {photo.title}
                     </h3>
                     <p className="text-sm text-white/70 mb-4 line-clamp-2">{photo.description}</p>
-                    <button className="inline-flex items-center gap-2 px-4 py-2 border border-white/30 rounded-full text-sm text-white hover:bg-[#ff0000] hover:border-[#ff0000] transition-all duration-300 hover:scale-105 active:scale-95">
+                    <button className="inline-flex items-center gap-2 px-4 py-2 border border-white/30 text-sm text-white hover:bg-[#e10600] hover:border-[#e10600] transition-all duration-300 hover:scale-105 active:scale-95">
                         <Eye className="w-4 h-4" />
-                        <span>View</span>
+                        <span className="font-mono tracking-widest text-xs uppercase">View</span>
                     </button>
                 </div>
 
@@ -117,7 +140,7 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
                     className="absolute inset-0 rounded-lg pointer-events-none transition-shadow duration-300"
                     style={{
                         boxShadow: isHovered
-                            ? 'inset 0 0 0 1px rgba(255,255,255,0.2), 0 0 30px rgba(255,0,0,0.1)'
+                            ? 'inset 0 0 0 1px rgba(225,6,0,0.4), 0 0 30px rgba(225,6,0,0.12)'
                             : 'inset 0 0 0 1px rgba(255,255,255,0)',
                     }}
                 />
