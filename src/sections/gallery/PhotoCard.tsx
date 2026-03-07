@@ -72,10 +72,10 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
                     <img src={photo.src} alt={photo.title} className="w-full h-full object-cover" loading="lazy" />
                 </div>
 
-                {/* Gradient Overlay */}
+                {/* Gradient Overlay — always-on on touch, hover-only on desktop */}
                 <div
-                    className="absolute inset-0 gallery-image-overlay transition-opacity duration-300"
-                    style={{ opacity: isHovered ? 1 : 0 }}
+                    className="absolute inset-0 gallery-image-overlay gallery-card-overlay transition-opacity duration-300"
+                    style={{ opacity: isHovered ? 1 : undefined }}
                 />
 
                 {/* F1 Driver-style position number — always visible */}
@@ -109,12 +109,12 @@ export function PhotoCard({ photo, index, onClick, isVisible }: PhotoCardProps) 
                     </span>
                 </div>
 
-                {/* Content */}
+                {/* Content — always slightly visible on touch (mobile), hover-only on desktop */}
                 <div
-                    className="absolute bottom-0 left-0 right-0 p-5 transition-all duration-300"
+                    className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 transition-all duration-300 gallery-card-content"
                     style={{
-                        opacity: isHovered ? 1 : 0,
-                        transform: isHovered ? 'translateY(0)' : 'translateY(20px)',
+                        opacity: isHovered ? 1 : undefined,
+                        transform: isHovered ? 'translateY(0)' : undefined,
                         transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
                     }}
                 >

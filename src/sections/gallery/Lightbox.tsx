@@ -73,34 +73,34 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
 
             {/* Close */}
             <button
-                className="absolute top-6 right-6 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-90 gallery-rotate-in"
+                className="absolute top-3 right-3 sm:top-6 sm:right-6 z-10 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-90 gallery-rotate-in"
                 style={{ animationDelay: '0.3s' }}
                 onClick={(e) => { e.stopPropagation(); onClose(); }}
             >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
 
             {/* Prev */}
             <button
-                className="absolute left-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:-translate-x-1 active:scale-90 gallery-slide-in-left"
+                className="absolute left-2 sm:left-6 bottom-[72px] sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 z-10 w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-90 gallery-slide-in-left"
                 style={{ animationDelay: '0.25s' }}
                 onClick={(e) => { e.stopPropagation(); handleNav('prev'); }}
             >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Next */}
             <button
-                className="absolute right-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 hover:translate-x-1 active:scale-90 gallery-slide-in-right"
+                className="absolute right-2 sm:right-6 bottom-[72px] sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 z-10 w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all duration-300 hover:scale-110 active:scale-90 gallery-slide-in-right"
                 style={{ animationDelay: '0.25s' }}
                 onClick={(e) => { e.stopPropagation(); handleNav('next'); }}
             >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Main image */}
             <div
-                className="relative w-[90vw] h-[80vh] flex items-center justify-center"
+                className="relative w-full sm:w-[90vw] h-[65vh] sm:h-[80vh] flex items-center justify-center px-14 sm:px-0"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div
@@ -114,49 +114,63 @@ export function Lightbox({ photos, currentIndex, isOpen, onClose, onNext, onPrev
                     <img
                         src={currentPhoto.src}
                         alt={currentPhoto.title}
-                        className="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl"
+                        className="max-w-full max-h-[62vh] sm:max-h-[75vh] object-contain rounded-lg shadow-2xl"
                     />
                 </div>
             </div>
 
             {/* Info */}
             <div
-                className="absolute bottom-24 left-1/2 -translate-x-1/2 text-center"
+                className="absolute bottom-16 sm:bottom-24 left-4 right-4 sm:left-1/2 sm:right-auto sm:-translate-x-1/2 text-center"
                 style={{
                     opacity: visible ? 1 : 0,
                     transition: 'opacity 200ms ease',
                 }}
             >
-                <h3 className="text-2xl font-semibold text-white mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h3 className="text-lg sm:text-2xl font-semibold text-white mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                     {currentPhoto.title}
                 </h3>
-                <p className="text-white/60 text-sm">{currentPhoto.description}</p>
+                <p className="text-white/60 text-xs sm:text-sm">{currentPhoto.description}</p>
             </div>
 
             {/* Counter */}
             <div
-                className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 gallery-fade-in-up"
+                className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 gallery-fade-in-up"
                 style={{ animationDelay: '0.5s' }}
             >
-                <span className="text-white font-medium">{currentIndex + 1}</span>
-                <span className="text-white/40">/</span>
-                <span className="text-white/60">{photos.length}</span>
+                <span className="text-[#e10600] font-black font-mono text-sm">P{String(currentIndex + 1).padStart(2, '0')}</span>
+                <span className="text-white/40 text-xs">/</span>
+                <span className="text-white/50 text-xs font-mono">{String(photos.length).padStart(2, '0')}</span>
             </div>
 
-            {/* Thumbnails */}
+            {/* Thumbnails — hidden on mobile to avoid clutter */}
             <div
-                className="absolute bottom-6 right-6 flex gap-2 gallery-fade-in-up"
+                className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 hidden sm:flex gap-2 gallery-fade-in-up"
                 style={{ animationDelay: '0.3s' }}
             >
                 {photos.map((photo, index) => (
                     <button
                         key={photo.id}
                         onClick={(e) => { e.stopPropagation(); onSelect(index); }}
-                        className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all duration-300 hover:scale-110 active:scale-95 ${index === currentIndex ? 'border-[#ff0000] scale-110' : 'border-transparent opacity-50 hover:opacity-80'
+                        className={`w-10 h-10 sm:w-12 sm:h-12 rounded overflow-hidden border-2 transition-all duration-300 hover:scale-110 active:scale-95 ${index === currentIndex ? 'border-[#e10600] scale-110' : 'border-transparent opacity-50 hover:opacity-80'
                             }`}
                     >
                         <img src={photo.src} alt={photo.title} className="w-full h-full object-cover" />
                     </button>
+                ))}
+            </div>
+
+            {/* Mobile dot indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex sm:hidden gap-1.5 mt-1" style={{ marginTop: '1.5rem' }}>
+                {photos.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={(e) => { e.stopPropagation(); onSelect(index); }}
+                        className={`rounded-full transition-all duration-300 ${index === currentIndex
+                                ? 'w-4 h-1.5 bg-[#e10600]'
+                                : 'w-1.5 h-1.5 bg-white/30'
+                            }`}
+                    />
                 ))}
             </div>
         </div>,

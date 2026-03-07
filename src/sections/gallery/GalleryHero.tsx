@@ -64,22 +64,22 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
 
                 {/* F1 telemetry row */}
                 <div
-                    className="flex items-center justify-center gap-0 mb-10 gallery-fade-in-up"
+                    className="flex flex-wrap items-center justify-center gap-px mb-10 gallery-fade-in-up"
                     style={{ animationDelay: '0.5s' }}
                 >
-                    <div className="flex items-center gap-3 px-5 py-2 border-l-2 border-[#e10600] bg-gray-900/5 dark:bg-white/5">
-                        <span className="text-gray-400 dark:text-white/40 text-[10px] font-mono tracking-widest uppercase">Frames</span>
-                        <span className="text-gray-900 dark:text-white text-lg font-black font-mono">{String(photoCount).padStart(2, '0')}</span>
+                    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 border-l-2 border-[#e10600] bg-gray-900/5 dark:bg-white/5">
+                        <span className="text-gray-400 dark:text-white/40 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase">Frames</span>
+                        <span className="text-gray-900 dark:text-white text-base sm:text-lg font-black font-mono">{String(photoCount).padStart(2, '0')}</span>
                     </div>
-                    <div className="w-px h-10 bg-gray-300 dark:bg-white/10" />
-                    <div className="flex items-center gap-3 px-5 py-2 border-r border-gray-200 dark:border-white/10 bg-gray-900/5 dark:bg-white/5">
-                        <span className="text-gray-400 dark:text-white/40 text-[10px] font-mono tracking-widest uppercase">Category</span>
-                        <span className="text-[#e10600] text-sm font-black font-mono uppercase tracking-widest">{activeCategory}</span>
+                    <div className="hidden sm:block w-px h-10 bg-gray-300 dark:bg-white/10" />
+                    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 border-l sm:border-l-0 border-gray-200 dark:border-white/10 bg-gray-900/5 dark:bg-white/5">
+                        <span className="text-gray-400 dark:text-white/40 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase">Cat</span>
+                        <span className="text-[#e10600] text-xs sm:text-sm font-black font-mono uppercase tracking-widest">{activeCategory}</span>
                     </div>
-                    <div className="w-px h-10 bg-gray-300 dark:bg-white/10" />
-                    <div className="flex items-center gap-3 px-5 py-2 bg-gray-900/5 dark:bg-white/5">
-                        <span className="text-gray-400 dark:text-white/40 text-[10px] font-mono tracking-widest uppercase">Lens</span>
-                        <span className="text-gray-900 dark:text-white text-sm font-black font-mono tracking-wide">APT</span>
+                    <div className="hidden sm:block w-px h-10 bg-gray-300 dark:bg-white/10" />
+                    <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 border-l border-gray-200 dark:border-white/10 bg-gray-900/5 dark:bg-white/5">
+                        <span className="text-gray-400 dark:text-white/40 text-[9px] sm:text-[10px] font-mono tracking-widest uppercase">Lens</span>
+                        <span className="text-gray-900 dark:text-white text-xs sm:text-sm font-black font-mono tracking-wide">APT</span>
                     </div>
                 </div>
 

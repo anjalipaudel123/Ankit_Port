@@ -2,16 +2,16 @@ import type { FilterBarProps } from './types';
 
 export function FilterBar({ categories, activeCategory, onSelect, photoCount }: FilterBarProps) {
     return (
-        <div className="flex flex-col items-center gap-5 gallery-fade-in-up" style={{ animationDelay: '0.8s' }}>
-            {/* F1-style tab strip */}
-            <div className="flex items-stretch border border-gray-200 dark:border-white/15 overflow-hidden">
+        <div className="flex flex-col items-center gap-5 gallery-fade-in-up w-full" style={{ animationDelay: '0.8s' }}>
+            {/* F1-style tab strip — scrollable on mobile */}
+            <div className="flex items-stretch border border-gray-200 dark:border-white/15 overflow-x-auto max-w-full scrollbar-none">
                 {categories.map((cat, i) => {
                     const active = activeCategory === cat.value;
                     return (
                         <button
                             key={cat.value}
                             onClick={() => onSelect(cat.value)}
-                            className={`gallery-filter-btn-f1 ${active ? 'active' : ''
+                            className={`gallery-filter-btn-f1 shrink-0 ${active ? 'active' : ''
                                 } ${i !== 0 ? 'border-l border-gray-200 dark:border-white/15' : ''}`}
                         >
                             {active && (
