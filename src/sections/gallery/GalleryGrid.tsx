@@ -12,7 +12,7 @@ interface GalleryGridProps {
 export function GalleryGrid({ photos, activeCategory }: GalleryGridProps) {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-    const { ref: gridRef, isVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.05 });
+    const { ref: gridRef, isVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0, rootMargin: '0px 0px 300px 0px' });
 
     const filteredPhotos = useMemo(() => {
         if (activeCategory === 'all') return photos;
@@ -20,7 +20,7 @@ export function GalleryGrid({ photos, activeCategory }: GalleryGridProps) {
     }, [photos, activeCategory]);
 
     return (
-        <section className="relative px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
+        <section className="relative px-3 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-12">
             <div className="max-w-[1400px] mx-auto">
                 <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredPhotos.map((photo, index) => (

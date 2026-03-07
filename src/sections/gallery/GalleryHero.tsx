@@ -10,7 +10,7 @@ interface GalleryHeroProps {
 
 export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: GalleryHeroProps) {
     return (
-        <section className="relative min-h-[55vh] flex flex-col items-center justify-center overflow-hidden">
+        <section className="relative min-h-0 sm:min-h-[55vh] flex flex-col items-center justify-center overflow-hidden">
             {/* ── F1-style top ticker bar ── */}
             <div className="absolute top-0 left-0 right-0 z-20 bg-[#e10600] h-8 flex items-center overflow-hidden">
                 <div className="gallery-ticker flex items-center gap-0 whitespace-nowrap">
@@ -42,20 +42,20 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
             </div>
 
             {/* Content */}
-            <div className="relative z-10 text-center max-w-4xl mx-auto px-4 pt-20 pb-12">
+            <div className="relative z-10 text-center max-w-4xl mx-auto px-4 pt-10 sm:pt-20 pb-6 sm:pb-12">
 
                 {/* Main heading */}
-                <div className="overflow-hidden mb-2">
+                <div className="overflow-hidden mb-1 sm:mb-2">
                     <h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white tracking-tight gallery-flip-in"
+                        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white tracking-tight gallery-flip-in"
                         style={{ fontFamily: "'Playfair Display', serif", animationDelay: '0.2s' }}
                     >
                         Photo
                     </h1>
                 </div>
-                <div className="overflow-hidden mb-8">
+                <div className="overflow-hidden mb-4 sm:mb-8">
                     <h1
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight gallery-flip-in"
+                        className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight gallery-flip-in"
                         style={{ fontFamily: "'Playfair Display', serif", animationDelay: '0.35s' }}
                     >
                         <span className="text-[#e10600]">Gallery</span>
@@ -64,7 +64,7 @@ export function GalleryHero({ activeCategory, onCategoryChange, photoCount }: Ga
 
                 {/* F1 telemetry row */}
                 <div
-                    className="flex flex-wrap items-center justify-center gap-px mb-10 gallery-fade-in-up"
+                    className="flex flex-wrap items-center justify-center gap-px mb-4 sm:mb-10 gallery-fade-in-up"
                     style={{ animationDelay: '0.5s' }}
                 >
                     <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 border-l-2 border-[#e10600] bg-gray-900/5 dark:bg-white/5">
