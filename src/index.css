@@ -1009,30 +1009,6 @@
   display: none;
 }
 
-/* ── PhotoCard content: always visible on touch, hover-only on pointer devices ── */
-.gallery-card-content {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.gallery-card-overlay {
-  opacity: 0;
-}
-
-@media (hover: none) {
-
-  /* Touch devices: show info permanently */
-  .gallery-card-content {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
-  }
-
-  .gallery-card-overlay {
-    opacity: 0.6 !important;
-  }
-}
-
 /* ── Lightbox swipe hint on mobile ── */
 @media (max-width: 640px) {
   .gallery-lightbox-backdrop {
