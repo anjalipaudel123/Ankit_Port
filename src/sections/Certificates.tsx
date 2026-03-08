@@ -90,23 +90,23 @@ function CertLightbox({ cert, onClose }: { cert: Certificate; onClose: () => voi
 
     return createPortal(
         <div
-            className="fixed inset-0 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 flex items-center justify-center p-3 sm:p-4 md:p-8"
             style={{ zIndex: 10000 }}
             onClick={onClose}
         >
             <div className="absolute inset-0 bg-black/90 backdrop-blur-xl animate-[fadeIn_0.2s_ease]" />
             <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
             >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <div className="absolute top-4 left-4 z-10">
-                <h3 className="text-white/80 text-sm font-medium">{cert.title}</h3>
-                <p className="text-white/40 text-xs">{cert.category}</p>
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 max-w-[60%]">
+                <h3 className="text-white/80 text-xs sm:text-sm font-medium truncate">{cert.title}</h3>
+                <p className="text-white/40 text-[10px] sm:text-xs">{cert.category}</p>
             </div>
             <div
-                className="relative z-10 max-w-5xl w-full max-h-[85vh] flex items-center justify-center"
+                className="relative z-10 max-w-5xl w-full max-h-[80vh] sm:max-h-[85vh] flex items-center justify-center mt-8 sm:mt-0"
                 onClick={(e) => e.stopPropagation()}
             >
                 {!loaded && (
@@ -141,8 +141,8 @@ export default function Certificates() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden">
-            {/* Ambient glow */}
-            <div className="fixed inset-0 pointer-events-none">
+            {/* Ambient glow — desktop only */}
+            <div className="fixed inset-0 pointer-events-none hidden sm:block">
                 <div
                     className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full"
                     style={{
@@ -153,8 +153,34 @@ export default function Certificates() {
             </div>
 
             <main className="relative z-10">
-                {/* Hero */}
-                <section className="pt-20 pb-6 px-4 text-center">
+                {/* ═══════════════════════════════════════
+                    MOBILE HERO  (< sm)
+                    Compact header — similar to gallery mobile
+                   ═══════════════════════════════════════ */}
+                <section className="sm:hidden">
+                    <div className="h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-red-400" />
+                    <div className="px-4 pt-5 pb-4">
+                        <div className="flex items-baseline justify-between mb-1">
+                            <h1 className="text-2xl font-bold tracking-tight" style={{ fontFamily: "'Playfair Display', serif" }}>
+                                <span className="text-gray-900 dark:text-white">My </span>
+                                <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">Certs</span>
+                            </h1>
+                            <span className="text-[10px] font-mono text-gray-400 dark:text-white/40 tracking-widest">
+                                {String(certificates.length).padStart(2, '0')} earned
+                            </span>
+                        </div>
+                        <p className="text-xs text-gray-400 dark:text-white/40">
+                            Systems, networking & security credentials
+                        </p>
+                    </div>
+                    <div className="h-px bg-gray-200 dark:bg-white/10" />
+                </section>
+
+                {/* ═══════════════════════════════════════
+                    DESKTOP HERO  (≥ sm)
+                    Full decorative hero
+                   ═══════════════════════════════════════ */}
+                <section className="hidden sm:block pt-20 pb-6 px-4 text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full mb-6">
                         <Award className="w-4 h-4 text-amber-400" />
                         <span className="text-xs uppercase tracking-[0.2em] text-gray-500 dark:text-white/50 font-medium">Certifications</span>
@@ -173,8 +199,8 @@ export default function Certificates() {
                     </p>
                 </section>
 
-                {/* Infinite Train Carousel */}
-                <section className="relative py-10 md:py-20">
+                {/* Infinite Train Carousel — desktop only */}
+                <section className="relative py-10 md:py-20 hidden sm:block">
                     {/* Fade edges */}
                     <div className="absolute left-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-r from-gray-50 dark:from-[#0a0a0a] to-transparent" />
                     <div className="absolute right-0 top-0 bottom-0 w-24 md:w-40 z-10 pointer-events-none bg-gradient-to-l from-gray-50 dark:from-[#0a0a0a] to-transparent" />
@@ -258,15 +284,16 @@ export default function Certificates() {
                 </section>
 
                 {/* Grid — all certs */}
-                <section className="px-4 pb-24">
+                <section className="px-3 sm:px-4 pb-12 sm:pb-24 pt-4 sm:pt-0">
                     <div className="max-w-5xl mx-auto">
-                        <div className="flex items-center gap-4 mb-10">
+                        {/* Section divider — desktop only */}
+                        <div className="hidden sm:flex items-center gap-4 mb-10">
                             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-white/10 to-transparent" />
                             <span className="text-xs uppercase tracking-[0.3em] text-gray-400 dark:text-white/30 font-mono">All Certificates</span>
                             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 dark:via-white/10 to-transparent" />
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                             {certificates.map((c) => {
                                 const CertIcon = c.icon;
                                 return (
