@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 
 // ── Inline SVG Icons ──────────────────────────────────────────────────
@@ -57,165 +57,6 @@ const JupyterIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor"><path d="M7.157 22.201A1.784 1.784 0 015.374 20.4a1.784 1.784 0 011.783-1.8c.978 0 1.782.81 1.782 1.8 0 .978-.804 1.8-1.782 1.8zm9.686-1.2c-.978 0-1.783-.81-1.783-1.8s.805-1.8 1.783-1.8a1.784 1.784 0 011.782 1.8c0 .99-.804 1.8-1.782 1.8zm3.738-14.1c-.6 0-1.08-.48-1.08-1.08s.48-1.08 1.08-1.08 1.08.48 1.08 1.08-.48 1.08-1.08 1.08zM12 18.001c-3.526 0-6.654-1.14-8.514-2.94a.642.642 0 01.462-1.08.66.66 0 01.456.186c1.632 1.566 4.41 2.554 7.596 2.554 3.186 0 5.964-.99 7.596-2.554a.636.636 0 01.918.018.636.636 0 01-.006.876C18.654 16.861 15.526 18 12 18zM12 6.001c3.222 0 6.12.96 7.926 2.496a.636.636 0 01.06.894.624.624 0 01-.894.066C17.49 8.085 14.886 7.281 12 7.281c-2.886 0-5.49.804-7.092 2.172a.63.63 0 01-.894-.06.636.636 0 01.06-.894C5.88 6.959 8.778 6 12 6z" /></svg>
 );
 
-// ── Particle Canvas Background ────────────────────────────────────────
-interface Particle {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  size: number;
-  opacity: number;
-  hue: number;
-}
-
-const ParticleField = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
-  const mouseRef = useRef({ x: -1000, y: -1000 });
-  const animRef = useRef<number>(0);
-
-  const initParticles = useCallback((w: number, h: number) => {
-    const count = Math.min(80, Math.floor((w * h) / 15000));
-    particlesRef.current = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      size: Math.random() * 2 + 0.5,
-      opacity: Math.random() * 0.5 + 0.1,
-      hue: Math.random() * 60 + 250,
-    }));
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let w = 0;
-    let h = 0;
-
-    const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      w = rect.width;
-      h = rect.height;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      ctx.scale(dpr, dpr);
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
-      initParticles(w, h);
-    };
-
-    const handleMouse = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    };
-
-    resize();
-    window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', handleMouse, { passive: true });
-
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      const particles = particlesRef.current;
-      const mouse = mouseRef.current;
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = w;
-        if (p.x > w) p.x = 0;
-        if (p.y < 0) p.y = h;
-        if (p.y > h) p.y = 0;
-
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          const force = (120 - dist) / 120;
-          p.vx += (dx / dist) * force * 0.15;
-          p.vy += (dy / dist) * force * 0.15;
-        }
-        p.vx *= 0.99;
-        p.vy *= 0.99;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${p.hue}, 70%, 65%, ${p.opacity})`;
-        ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const cdx = p.x - p2.x;
-          const cdy = p.y - p2.y;
-          const cdist = Math.sqrt(cdx * cdx + cdy * cdy);
-          if (cdist < 150) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `hsla(270, 60%, 60%, ${(1 - cdist / 150) * 0.12})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => {
-      cancelAnimationFrame(animRef.current);
-      window.removeEventListener('resize', resize);
-      window.removeEventListener('mousemove', handleMouse);
-    };
-  }, [initParticles]);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ opacity: 0.6 }}
-    />
-  );
-};
-
-// ── Radial Progress Ring ──────────────────────────────────────────────
-const ProgressRing = ({ progress, isActive, color }: { progress: number; isActive: boolean; color: string }) => {
-  const circumference = 2 * Math.PI * 18;
-  const offset = circumference - (circumference * (isActive ? progress : 0)) / 100;
-
-  return (
-    <svg className="absolute -top-1 -right-1 w-10 h-10" viewBox="0 0 40 40">
-      <circle cx="20" cy="20" r="18" fill="none" strokeWidth="2" stroke="rgba(255,255,255,0.06)" />
-      <circle
-        cx="20" cy="20" r="18" fill="none" strokeWidth="2.5"
-        stroke={color}
-        strokeDasharray={circumference}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        transform="rotate(-90 20 20)"
-        style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1)' }}
-      />
-      <text
-        x="20" y="20"
-        textAnchor="middle" dominantBaseline="central"
-        fill="rgba(255,255,255,0.5)"
-        fontSize="9" fontWeight="600"
-        style={{
-          opacity: isActive ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-        }}
-      >
-        {progress}
-      </text>
-    </svg>
-  );
-};
-
 // ── Types ─────────────────────────────────────────────────────────────
 interface Skill {
   name: string;
@@ -228,337 +69,327 @@ interface SkillCategory {
   subtitle: string;
   icon: React.FC<{ className?: string }>;
   skills: Skill[];
-  gradient: string;
-  accentColor: string;
-  glowColor: string;
 }
+
 
 // ── Main Component ────────────────────────────────────────────────────
 const Skills = () => {
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { ref: headerRef, isVisible: headerVisible } = useScrollReveal<HTMLDivElement>();
-  const { ref: gridRef, isVisible: gridVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.05 });
-  const { ref: tagsRef, isVisible: tagsVisible } = useScrollReveal<HTMLDivElement>();
+    const [activeCategory, setActiveCategory] = useState<number | null>(null);
+    const sectionRef = useRef<HTMLDivElement>(null);
+    const { ref: headerRef, isVisible: headerVisible } = useScrollReveal<HTMLDivElement>();
+    const { ref: gridRef, isVisible: gridVisible } = useScrollReveal<HTMLDivElement>({ threshold: 0.05 });
+    const { ref: tagsRef, isVisible: tagsVisible } = useScrollReveal<HTMLDivElement>();
 
-  const categories: SkillCategory[] = [
-    {
-      title: 'Machine Learning & AI',
-      subtitle: 'Neural architectures & training',
-      icon: BrainIcon,
-      gradient: 'from-violet-600 via-purple-600 to-indigo-600',
-      accentColor: '#a78bfa',
-      glowColor: 'rgba(167, 139, 250, 0.15)',
-      skills: [
-        { name: 'PyTorch', icon: PyTorchIcon, level: 90 },
-        { name: 'Python', icon: PythonIcon, level: 95 },
-        { name: 'CNNs', icon: NeuralNetIcon, level: 85 },
-        { name: 'Overfitting Prevention', icon: ShieldCheckIcon, level: 85 },
-        { name: 'Hyperparameter Tuning', icon: SlidersIcon, level: 80 },
-        { name: 'Backpropagation', icon: FlowIcon, level: 85 },
-      ],
-    },
-    {
-      title: 'Deep Learning & Gen AI',
-      subtitle: 'Generative models & NLP',
-      icon: GanIcon,
-      gradient: 'from-fuchsia-600 via-pink-600 to-rose-600',
-      accentColor: '#f472b6',
-      glowColor: 'rgba(244, 114, 182, 0.15)',
-      skills: [
-        { name: 'GANs', icon: GanIcon, level: 90 },
-        { name: 'VAEs', icon: BrainIcon, level: 85 },
-        { name: 'NLP', icon: NlpIcon, level: 80 },
-        { name: 'Flow Models', icon: FlowIcon, level: 75 },
-        { name: 'BERT / DeBERTa', icon: NlpIcon, level: 85 },
-        { name: 'Phi-2', icon: BrainIcon, level: 80 },
-      ],
-    },
-    {
-      title: 'Backend & Cybersecurity',
-      subtitle: 'Infrastructure & identity',
-      icon: DjangoIcon,
-      gradient: 'from-cyan-600 via-teal-600 to-emerald-600',
-      accentColor: '#2dd4bf',
-      glowColor: 'rgba(45, 212, 191, 0.15)',
-      skills: [
-        { name: 'Django', icon: DjangoIcon, level: 90 },
-        { name: 'REST APIs', icon: RestApiIcon, level: 85 },
-        { name: 'SQL', icon: DatabaseIcon, level: 80 },
-        { name: 'Git', icon: GitIcon, level: 85 },
-        { name: 'Active Directory', icon: ActiveDirectoryIcon, level: 80 },
-        { name: 'Kerberos / NTLM', icon: KerberosIcon, level: 75 },
-      ],
-    },
-  ];
+    const categories: SkillCategory[] = [
+        {
+            title: 'Machine Learning & AI',
+            subtitle: 'Neural architectures & training pipelines',
+            icon: BrainIcon,
+            skills: [
+                { name: 'PyTorch', icon: PyTorchIcon, level: 90 },
+                { name: 'Python', icon: PythonIcon, level: 95 },
+                { name: 'CNNs', icon: NeuralNetIcon, level: 85 },
+                { name: 'Overfitting Prevention', icon: ShieldCheckIcon, level: 85 },
+                { name: 'Hyperparameter Tuning', icon: SlidersIcon, level: 80 },
+                { name: 'Backpropagation', icon: FlowIcon, level: 85 },
+            ],
+        },
+        {
+            title: 'Deep Learning & Gen AI',
+            subtitle: 'Generative models & natural language',
+            icon: GanIcon,
+            skills: [
+                { name: 'GANs', icon: GanIcon, level: 90 },
+                { name: 'VAEs', icon: BrainIcon, level: 85 },
+                { name: 'NLP', icon: NlpIcon, level: 80 },
+                { name: 'Flow Models', icon: FlowIcon, level: 75 },
+                { name: 'BERT / DeBERTa', icon: NlpIcon, level: 85 },
+                { name: 'Phi-2', icon: BrainIcon, level: 80 },
+            ],
+        },
+        {
+            title: 'Backend & Cybersecurity',
+            subtitle: 'Infrastructure & identity management',
+            icon: DjangoIcon,
+            skills: [
+                { name: 'Django', icon: DjangoIcon, level: 90 },
+                { name: 'REST APIs', icon: RestApiIcon, level: 85 },
+                { name: 'SQL', icon: DatabaseIcon, level: 80 },
+                { name: 'Git', icon: GitIcon, level: 85 },
+                { name: 'Active Directory', icon: ActiveDirectoryIcon, level: 80 },
+                { name: 'Kerberos / NTLM', icon: KerberosIcon, level: 75 },
+            ],
+        },
+    ];
 
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (sectionRef.current && !sectionRef.current.contains(e.target as Node)) {
-        setActiveCategory(null);
-      }
-    };
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
-  }, []);
+    const additionalSkills = [
+        { name: 'Computer Vision', icon: GanIcon },
+        { name: 'NLP', icon: NlpIcon },
+        { name: 'Transformers', icon: BrainIcon },
+        { name: 'GradCAM', icon: NeuralNetIcon },
+        { name: 'Explainable AI', icon: BrainIcon },
+        { name: 'REST APIs', icon: RestApiIcon },
+        { name: 'PostgreSQL', icon: DatabaseIcon },
+        { name: 'Docker', icon: DockerIcon },
+        { name: 'Linux', icon: LinuxIcon },
+        { name: 'Jupyter', icon: JupyterIcon },
+        { name: 'NumPy', icon: PythonIcon },
+        { name: 'Pandas', icon: PythonIcon },
+        { name: 'Windows Server', icon: ShieldCheckIcon },
+        { name: 'IAM', icon: ActiveDirectoryIcon },
+    ];
 
-  const additionalSkills = [
-    { name: 'Computer Vision', icon: GanIcon },
-    { name: 'NLP', icon: NlpIcon },
-    { name: 'Transformers', icon: BrainIcon },
-    { name: 'GradCAM', icon: NeuralNetIcon },
-    { name: 'Explainable AI', icon: BrainIcon },
-    { name: 'REST APIs', icon: RestApiIcon },
-    { name: 'PostgreSQL', icon: DatabaseIcon },
-    { name: 'Docker', icon: DockerIcon },
-    { name: 'Linux', icon: LinuxIcon },
-    { name: 'Jupyter', icon: JupyterIcon },
-    { name: 'NumPy', icon: PythonIcon },
-    { name: 'Pandas', icon: PythonIcon },
-    { name: 'Windows Server', icon: ShieldCheckIcon },
-    { name: 'IAM', icon: ActiveDirectoryIcon },
-  ];
+    const totalSkills = categories.reduce((sum, cat) => sum + cat.skills.length, 0) + additionalSkills.length;
 
-  return (
-    <div className="bg-gray-50 dark:bg-[#05050a] min-h-screen" ref={sectionRef}>
-      <section id="skills" className="relative py-24 lg:py-32 overflow-hidden">
-        {/* Particle Canvas Background */}
-        <ParticleField />
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (sectionRef.current && !sectionRef.current.contains(e.target as Node)) {
+                setActiveCategory(null);
+            }
+        };
+        window.addEventListener('click', handleClick);
+        return () => window.removeEventListener('click', handleClick);
+    }, []);
 
-        {/* Radial gradient overlays */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-purple-600/[0.04] rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-fuchsia-600/[0.04] rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-600/[0.02] rounded-full blur-[150px]" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ── Section Header ───────────────────────────────────────── */}
-          <div
-            ref={headerRef}
-            className={`text-center mb-20 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-100 dark:bg-white/[0.03] border border-gray-200 dark:border-white/[0.06] backdrop-blur-sm mb-6">
-              <div className="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-purple-400 animate-pulse" />
-              <span className="text-xs font-medium text-purple-600 dark:text-purple-300/80 uppercase tracking-[0.2em]">
-                Expertise
-              </span>
-            </div>
-
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-gray-900 dark:text-white mb-4">
-              Technical{' '}
-              <span className="relative inline-block">
-                <span className="text-gradient">Arsenal</span>
-                <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 8" fill="none">
-                  <path
-                    d="M1 5.5Q50 1 100 5.5Q150 10 199 5.5"
-                    stroke="url(#underline-grad)"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    style={{
-                      strokeDasharray: 300,
-                      strokeDashoffset: headerVisible ? 0 : 300,
-                      transition: 'stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1) 0.5s, opacity 0.3s ease 0.5s',
-                      opacity: headerVisible ? 1 : 0,
-                    }}
-                  />
-                  <defs>
-                    <linearGradient id="underline-grad" x1="0" y1="0" x2="200" y2="0">
-                      <stop offset="0%" stopColor="#a78bfa" stopOpacity="0" />
-                      <stop offset="50%" stopColor="#a78bfa" />
-                      <stop offset="100%" stopColor="#f472b6" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              </span>
-            </h2>
-
-            <p className="text-gray-600 dark:text-gray-500 text-lg max-w-xl mx-auto mt-6">
-              Building at the intersection of machine intelligence, backend systems, and security infrastructure
-            </p>
-          </div>
-
-          {/* ── Category Cards Grid ──────────────────────────────────── */}
-          <div ref={gridRef} className="grid lg:grid-cols-3 gap-6 lg:gap-8">
-            {categories.map((category, catIndex) => {
-              const isActive = activeCategory === catIndex;
-
-              return (
-                <div
-                  key={category.title}
-                  className={`group relative transition-all duration-700 ${gridVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
-                    }`}
-                  style={{ transitionDelay: `${300 + catIndex * 200}ms` }}
-                  onClick={() => setActiveCategory(isActive ? null : catIndex)}
-                >
-                  <div
-                    className={`relative rounded-2xl overflow-hidden cursor-pointer transition-all duration-500 ${isActive
-                      ? 'ring-1 ring-white/20 shadow-2xl'
-                      : 'ring-1 ring-white/[0.06] hover:ring-white/[0.12]'
-                      }`}
-                    style={{
-                      boxShadow: isActive ? `0 0 60px ${category.glowColor}, 0 0 120px ${category.glowColor}` : 'none',
-                    }}
-                  >
-                    {/* Animated gradient border (top edge) */}
-                    <div className={`h-[2px] w-full bg-gradient-to-r ${category.gradient} transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-40 group-hover:opacity-70'}`} />
-
-                    {/* Card body */}
-                    <div className="relative p-6 lg:p-8 bg-white dark:bg-[#0a0a14]/80 backdrop-blur-xl">
-                      <div
-                        className="absolute inset-0 transition-opacity duration-500"
-                        style={{
-                          background: `radial-gradient(ellipse at 50% 0%, ${category.glowColor}, transparent 70%)`,
-                          opacity: isActive ? 1 : 0,
-                        }}
-                      />
-
-                      <div className="relative z-10">
-                        {/* Category header */}
-                        <div className="flex items-start justify-between mb-8">
-                          <div className="flex items-center gap-4">
-                            <div className={`relative w-14 h-14 rounded-2xl bg-gradient-to-br ${category.gradient} p-[1px]`}>
-                              <div className="w-full h-full rounded-2xl bg-white dark:bg-[#0a0a14] flex items-center justify-center">
-                                <span style={{ color: category.accentColor }}>
-                                  <category.icon className="w-7 h-7" />
-                                </span>
-                              </div>
-                            </div>
-                            <div>
-                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight">
-                                {category.title}
-                              </h3>
-                              <p className="text-sm text-gray-500 dark:text-gray-500 mt-0.5">{category.subtitle}</p>
-                            </div>
-                          </div>
-
-                          <div className={`w-8 h-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center transition-all duration-500 ${isActive ? 'rotate-45 border-gray-400 dark:border-white/30' : 'group-hover:border-gray-300 dark:group-hover:border-white/20'}`}>
-                            <svg className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                              <path d="M12 5v14M5 12h14" />
-                            </svg>
-                          </div>
-                        </div>
-
-                        {/* Skills list */}
-                        <div className="space-y-3">
-                          {category.skills.map((skill, skillIndex) => {
-                            const isSkillHovered = hoveredSkill === skill.name;
-                            return (
-                              <div
-                                key={skill.name}
-                                style={{
-                                  transitionDelay: isActive ? `${skillIndex * 60}ms` : '0ms',
-                                }}
-                                onMouseEnter={() => setHoveredSkill(skill.name)}
-                                onMouseLeave={() => setHoveredSkill(null)}
-                              >
-                                <div className={`relative flex items-center gap-4 p-3 rounded-xl transition-all duration-300 ${isSkillHovered ? 'bg-gray-100 dark:bg-white/[0.04]' : ''
-                                  }`}>
-                                  <div className={`relative w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isSkillHovered
-                                    ? 'bg-gray-200 dark:bg-white/[0.08] scale-110'
-                                    : 'bg-gray-100 dark:bg-white/[0.03]'
-                                    }`}>
-                                    <span style={{ color: isSkillHovered ? category.accentColor : 'rgba(255,255,255,0.4)' }} className="transition-colors duration-300">
-                                      <skill.icon className="w-5 h-5" />
-                                    </span>
-                                    <ProgressRing
-                                      progress={skill.level}
-                                      isActive={isSkillHovered}
-                                      color={category.accentColor}
-                                    />
-                                  </div>
-
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center justify-between mb-1.5">
-                                      <span className={`text-sm font-medium transition-colors duration-300 ${isSkillHovered ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
-                                        }`}>
-                                        {skill.name}
-                                      </span>
-                                      <span
-                                        className="text-xs font-mono transition-all duration-300"
-                                        style={{
-                                          color: isSkillHovered ? category.accentColor : 'transparent',
-                                        }}
-                                      >
-                                        {skill.level}%
-                                      </span>
-                                    </div>
-
-                                    <div className="h-[3px] w-full rounded-full bg-gray-200 dark:bg-white/[0.04] overflow-hidden">
-                                      <div
-                                        className="h-full rounded-full transition-all duration-700 ease-out"
-                                        style={{
-                                          width: isSkillHovered || isActive ? `${skill.level}%` : '0%',
-                                          background: `linear-gradient(90deg, ${category.accentColor}, ${category.accentColor}88)`,
-                                          boxShadow: isSkillHovered ? `0 0 8px ${category.accentColor}44` : 'none',
-                                          transitionDelay: isActive ? `${skillIndex * 80}ms` : '0ms',
-                                        }}
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-
-                        {/* Category average */}
-                        <div className={`mt-6 pt-5 border-t border-gray-200 dark:border-white/[0.04] flex items-center justify-between transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}>
-                          <span className="text-xs text-gray-500 dark:text-gray-600 uppercase tracking-wider">Average proficiency</span>
-                          <span className="text-sm font-mono" style={{ color: category.accentColor }}>
-                            {Math.round(category.skills.reduce((a, s) => a + s.level, 0) / category.skills.length)}%
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+    return (
+        <div className="bg-gray-50 dark:bg-[#05050a] min-h-screen" ref={sectionRef}>
+            <section id="skills" className="relative py-24 lg:py-32 overflow-hidden">
+                {/* Subtle background accents */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-[#e10600]/[0.02] rounded-full blur-[150px]" />
+                    <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#e10600]/[0.015] rounded-full blur-[120px]" />
                 </div>
-              );
-            })}
-          </div>
 
-          {/* ── Additional Skills ─────────────────────────────────────── */}
-          <div
-            ref={tagsRef}
-            className={`mt-20 transition-all duration-1000 ${tagsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-              }`}
-          >
-            <div className="text-center mb-8">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-500 uppercase tracking-[0.15em]">
-                Also in the toolkit
-              </h3>
-            </div>
+                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* ── Section Header ─────────────────────────────────── */}
+                    <div
+                        ref={headerRef}
+                        className={`text-center mb-20 transition-all duration-1000 ${headerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                            }`}
+                    >
+                        {/* Label with red accent lines */}
+                        <div className="inline-flex items-center gap-3 mb-6">
+                            <div className="h-px w-8 bg-[#e10600]/40" />
+                            <span className="text-xs font-mono uppercase tracking-[0.25em] text-[#e10600]/70">
+                                Technical Profile
+                            </span>
+                            <div className="h-px w-8 bg-[#e10600]/40" />
+                        </div>
 
-            <div className="flex flex-wrap justify-center gap-2.5 max-w-4xl mx-auto">
-              {additionalSkills.map((tag, index) => (
-                <span
-                  key={tag.name}
-                  className={`group/tag inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm cursor-default transition-all duration-500 bg-gray-100 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06] hover:bg-purple-100 dark:hover:bg-purple-500/10 hover:border-purple-300 dark:hover:border-purple-400/20 hover:-translate-y-0.5 hover:shadow-md hover:shadow-purple-500/10 ${tagsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'
-                    }`}
-                  style={{
-                    transitionDelay: `${600 + index * 50}ms`,
-                  }}
-                >
-                  <tag.icon className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 group-hover/tag:text-purple-500 dark:group-hover/tag:text-purple-400 transition-colors duration-300" />
-                  <span className="text-gray-600 dark:text-gray-500 group-hover/tag:text-gray-800 dark:group-hover/tag:text-gray-300 transition-colors duration-300">{tag.name}</span>
-                </span>
-              ))}
-            </div>
-          </div>
+                        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-gray-900 dark:text-white mb-4">
+                            Skills & Expertise
+                        </h2>
 
-          {/* ── Bottom accent line ────────────────────────────────────── */}
-          <div className="mt-24 flex justify-center">
-            <div
-              className={`h-px w-32 bg-gradient-to-r from-transparent via-purple-500/30 to-transparent transition-all duration-1000 delay-500 ${tagsVisible ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
-                }`}
-            />
-          </div>
+                        <p className="text-gray-500 dark:text-gray-500 text-lg max-w-xl mx-auto mt-4">
+                            Building at the intersection of machine intelligence, backend systems, and security infrastructure
+                        </p>
+
+                        {/* Stats bar */}
+                        <div className="flex items-center justify-center gap-6 mt-8">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-mono font-semibold text-gray-900 dark:text-white">
+                                    {String(categories.length).padStart(2, '0')}
+                                </span>
+                                <span className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wider">Domains</span>
+                            </div>
+                            <div className="w-px h-3 bg-gray-300 dark:bg-white/10" />
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-mono font-semibold text-gray-900 dark:text-white">
+                                    {totalSkills}+
+                                </span>
+                                <span className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wider">Technologies</span>
+                            </div>
+                            <div className="w-px h-3 bg-gray-300 dark:bg-white/10" />
+                            <div className="flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wider">Active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ── Category Cards Grid ────────────────────────────── */}
+                    <div ref={gridRef} className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+                        {categories.map((category, catIndex) => {
+                            const isActive = activeCategory === catIndex;
+                            const avg = Math.round(
+                                category.skills.reduce((a, s) => a + s.level, 0) / category.skills.length
+                            );
+
+                            return (
+                                <div
+                                    key={category.title}
+                                    className={`group relative transition-all duration-700 ${gridVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
+                                        }`}
+                                    style={{ transitionDelay: `${300 + catIndex * 200}ms` }}
+                                    onClick={() => setActiveCategory(isActive ? null : catIndex)}
+                                >
+                                    <div
+                                        className={`relative rounded-xl overflow-hidden cursor-pointer transition-all duration-500 border ${isActive
+                                                ? 'border-[#e10600]/20 shadow-lg shadow-[#e10600]/5'
+                                                : 'border-gray-200 dark:border-white/[0.06] hover:border-gray-300 dark:hover:border-white/[0.12]'
+                                            }`}
+                                    >
+                                        {/* Red accent line on top */}
+                                        <div
+                                            className={`h-[2px] bg-[#e10600] transition-transform duration-500 origin-center ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                                                }`}
+                                        />
+
+                                        <div className="relative p-6 lg:p-8 bg-white dark:bg-[#0a0a12]">
+                                            {/* Subtle glow on active */}
+                                            {isActive && (
+                                                <div className="absolute inset-0 bg-gradient-to-b from-[#e10600]/[0.03] to-transparent pointer-events-none" />
+                                            )}
+
+                                            <div className="relative z-10">
+                                                {/* Category header */}
+                                                <div className="flex items-start justify-between mb-8">
+                                                    <div className="flex items-center gap-4">
+                                                        <div
+                                                            className={`w-12 h-12 rounded-lg border flex items-center justify-center transition-all duration-300 ${isActive
+                                                                    ? 'border-[#e10600]/30 bg-[#e10600]/5'
+                                                                    : 'border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.02] group-hover:border-[#e10600]/20 group-hover:bg-[#e10600]/[0.02]'
+                                                                }`}
+                                                        >
+                                                            <category.icon
+                                                                className={`w-6 h-6 transition-colors duration-300 ${isActive
+                                                                        ? 'text-[#e10600]'
+                                                                        : 'text-gray-400 dark:text-gray-500 group-hover:text-[#e10600]/70'
+                                                                    }`}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white leading-tight">
+                                                                {category.title}
+                                                            </h3>
+                                                            <p className="text-sm text-gray-400 dark:text-gray-600 mt-0.5">
+                                                                {category.subtitle}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Expand indicator */}
+                                                    <div
+                                                        className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 ${isActive
+                                                                ? 'rotate-45 border-[#e10600]/30 bg-[#e10600]/5'
+                                                                : 'border-gray-200 dark:border-white/[0.08] group-hover:border-[#e10600]/20'
+                                                            }`}
+                                                    >
+                                                        <svg
+                                                            className={`w-3.5 h-3.5 transition-colors duration-300 ${isActive ? 'text-[#e10600]' : 'text-gray-400 dark:text-gray-500'
+                                                                }`}
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                            stroke="currentColor"
+                                                            strokeWidth="2"
+                                                        >
+                                                            <path d="M12 5v14M5 12h14" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                                {/* Skills list */}
+                                                <div className="space-y-4">
+                                                    {category.skills.map((skill, skillIndex) => (
+                                                        <div
+                                                            key={skill.name}
+                                                            style={{
+                                                                transitionDelay: isActive ? `${skillIndex * 60}ms` : '0ms',
+                                                            }}
+                                                        >
+                                                            <div className="flex items-center gap-3 mb-1.5">
+                                                                <div className="w-8 h-8 rounded-md border border-gray-100 dark:border-white/[0.04] bg-gray-50 dark:bg-white/[0.02] flex items-center justify-center">
+                                                                    <skill.icon className="w-4 h-4 text-gray-400 dark:text-gray-600" />
+                                                                </div>
+                                                                <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-400">
+                                                                    {skill.name}
+                                                                </span>
+                                                                <span
+                                                                    className={`text-xs font-mono transition-all duration-500 ${isActive ? 'text-gray-900 dark:text-white' : 'text-gray-300 dark:text-gray-700'
+                                                                        }`}
+                                                                >
+                                                                    {skill.level}%
+                                                                </span>
+                                                            </div>
+                                                            <div className="ml-11 h-[2px] rounded-full bg-gray-100 dark:bg-white/[0.04] overflow-hidden">
+                                                                <div
+                                                                    className="h-full rounded-full transition-all duration-700 ease-out"
+                                                                    style={{
+                                                                        width: isActive ? `${skill.level}%` : '0%',
+                                                                        background: '#e10600',
+                                                                        opacity: isActive ? 0.7 : 0,
+                                                                        transitionDelay: isActive ? `${skillIndex * 80}ms` : '0ms',
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                {/* Category footer */}
+                                                <div
+                                                    className={`mt-6 pt-5 border-t border-gray-100 dark:border-white/[0.04] flex items-center justify-between transition-all duration-500 ${isActive ? 'opacity-100' : 'opacity-0'
+                                                        }`}
+                                                >
+                                                    <span className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wider">
+                                                        Avg. Proficiency
+                                                    </span>
+                                                    <span className="text-sm font-mono font-semibold text-[#e10600]">
+                                                        {avg}%
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* ── Additional Skills ──────────────────────────────── */}
+                    <div
+                        ref={tagsRef}
+                        className={`mt-20 transition-all duration-1000 ${tagsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                            }`}
+                    >
+                        <div className="text-center mb-8">
+                            <h3 className="text-sm font-mono text-gray-400 dark:text-gray-600 uppercase tracking-[0.15em]">
+                                Also in the toolkit
+                            </h3>
+                        </div>
+
+                        <div className="flex flex-wrap justify-center gap-2.5 max-w-4xl mx-auto">
+                            {additionalSkills.map((tag, index) => (
+                                <span
+                                    key={tag.name}
+                                    className={`group/tag inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm cursor-default transition-all duration-500
+                    bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/[0.06]
+                    hover:bg-red-50 dark:hover:bg-[#e10600]/5 hover:border-[#e10600]/20
+                    hover:-translate-y-0.5 hover:shadow-sm
+                    ${tagsVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'}
+                  `}
+                                    style={{ transitionDelay: `${600 + index * 50}ms` }}
+                                >
+                                    <tag.icon className="w-3.5 h-3.5 text-gray-400 dark:text-gray-600 group-hover/tag:text-[#e10600]/70 transition-colors duration-300" />
+                                    <span className="text-gray-500 dark:text-gray-500 group-hover/tag:text-gray-800 dark:group-hover/tag:text-gray-300 transition-colors duration-300">
+                                        {tag.name}
+                                    </span>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Bottom accent */}
+                    <div className="mt-24 flex justify-center">
+                        <div
+                            className={`h-px w-32 bg-gradient-to-r from-transparent via-[#e10600]/20 to-transparent transition-all duration-1000 delay-500 ${tagsVisible ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
+                                }`}
+                        />
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 };
 
 export default Skills;
